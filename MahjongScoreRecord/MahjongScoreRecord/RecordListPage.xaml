@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MahjongScoreRecord.RecordListPage"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             Title="戦績" NavigationPage.HasNavigationBar="False" Padding="0">
+    <RelativeLayout>
+        <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
+               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
+            <Label Text="戦績一覧" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+        </Frame>
+        <Frame HasShadow="True" BorderColor="Gray"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.85}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
+            <ListView x:Name="RecordListView" ItemTapped="RecordListView_ItemTapped" SeparatorColor="Gray" SeparatorVisibility="Default">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding RecordName}" Detail="{Binding Players}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Frame>
+        <Button x:Name="RegisterRecordButton" Text="+" FontSize="Title" CornerRadius="300" BackgroundColor="#2196F3" TextColor="White" BorderColor="Black" BorderWidth="1"  WidthRequest="80" HeightRequest="80"
+                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0, Constant=-120}"
+                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0, Constant=-120}"
+                android:Button.UseDefaultPadding="true" android:Button.UseDefaultShadow="true"/>
+    </RelativeLayout>
+</ContentPage>

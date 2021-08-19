@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MahjongScoreRecord.RegisterRecordPage">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
+               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
+                <Label Text="雀士登録" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+            </Frame>
+            <ScrollView x:Name="RegisterPlayerScrollView"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.8}"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.15}">
+                <StackLayout>
+                    
+                </StackLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>
