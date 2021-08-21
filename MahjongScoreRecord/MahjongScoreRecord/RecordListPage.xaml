@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MahjongScoreRecord.RecordListPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-             Title="戦績" NavigationPage.HasNavigationBar="False" Padding="0">
+             Title="戦績" NavigationPage.HasNavigationBar="False" Padding="0" Appearing="RecordListPage_Appearing">
     <RelativeLayout>
         <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
@@ -18,7 +18,39 @@
             <ListView x:Name="RecordListView" ItemTapped="RecordListView_ItemTapped" SeparatorColor="Gray" SeparatorVisibility="Default">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding RecordName}" Detail="{Binding Players}"/>
+                        <ViewCell>
+                            <Frame CornerRadius="10" BackgroundColor="White" BorderColor="Gray" Margin="5" Padding="5">
+                                <StackLayout>
+                                    <Grid ColumnSpacing="1" RowSpacing="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label Text="{Binding RecordName}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="0" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="1" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>    
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="2" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="3" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label Text="{Binding PlayerName4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Frame>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -26,6 +58,6 @@
         <Button x:Name="RegisterRecordButton" Text="+" FontSize="Title" CornerRadius="300" BackgroundColor="#2196F3" TextColor="White" BorderColor="Black" BorderWidth="1"  WidthRequest="80" HeightRequest="80"
                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0, Constant=-120}"
                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0, Constant=-120}"
-                android:Button.UseDefaultPadding="true" android:Button.UseDefaultShadow="true"/>
+                android:Button.UseDefaultPadding="true" android:Button.UseDefaultShadow="true" Clicked="RegisterRecordButton_Clicked"/>
     </RelativeLayout>
 </ContentPage>

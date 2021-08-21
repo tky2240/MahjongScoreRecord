@@ -3,37 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SQLite;
+using MahjongScoreRecord.Models;
+using System.Text.RegularExpressions;
 
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PlayerListPage : ContentPage {
         public PlayerListPage() {
             InitializeComponent();
-            List<PlayerListViewItem> playerListViewItems = new List<PlayerListViewItem>();
-            for(int i = 0; i < 50; i++) {
-                playerListViewItems.Add(new PlayerListViewItem($"hoge{i}"));
-            }
-            PlayerListView.ItemsSource = playerListViewItems;
         }
 
         private void PlayerListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             ListView listView = (ListView)sender;
-            PlayerListViewItem playerListViewItem = (PlayerListViewItem)listView.SelectedItem;
+            Player selectedPlayer = (Player)listView.SelectedItem;
             listView.SelectedItem = null;
+            DisplayAlert("Tapped", selectedPlayer.PlayerName, "OK");
             //Navigation.PushModalAsync(new NavigationPage(new )
         }
 
         private async void RegisterPlayerButton_Clicked(object sender, EventArgs e) {
             string playerName = await DisplayPromptAsync("雀士名", "登録する雀士の名前を入力してください", "OK", "Cancel", "hoge", 64, Keyboard.Text, "");
+            if(playerName == null) {
+                return;
+            }
+            if (Regex.IsMatch(playerName, @"^\s*$")) {
+                await DisplayAlert("エラー", "正しい名前を入力してください", "OK");
+                return;
+            }
+            SQLiteConnection db = await DBOperations.ConnectDB();
+            db.Insert(new Player { PlayerName = playerName.Trim() });
+            RefreshList(db);
         }
-    }
-    public class PlayerListViewItem {
-        public PlayerListViewItem(string player) {
-            Player = player;
+        private async void PlayerListPage_Appearing(object sender, EventArgs e) {
+            SQLiteConnection db = await DBOperations.ConnectDB();
+            RefreshList(db);
         }
-        public string Player { get; }
+        private void RefreshList(SQLiteConnection db) {
+            PlayerListView.ItemsSource = db.Table<Player>().ToList(); ;
+            db.Dispose();
+        }
     }
 }

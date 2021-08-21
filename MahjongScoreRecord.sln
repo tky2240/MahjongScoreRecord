@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahjongScoreRecord.Android"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahjongScoreRecord.iOS", "MahjongScoreRecord\MahjongScoreRecord.iOS\MahjongScoreRecord.iOS.csproj", "{737F6C84-4937-4CA6-AE2A-F8703FE01BD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahjongScoreRecord", "MahjongScoreRecord\MahjongScoreRecord\MahjongScoreRecord.csproj", "{ED8AF3CB-E5B9-4817-A10C-34C4F8CB10D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MahjongScoreRecord", "MahjongScoreRecord\MahjongScoreRecord\MahjongScoreRecord.csproj", "{ED8AF3CB-E5B9-4817-A10C-34C4F8CB10D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

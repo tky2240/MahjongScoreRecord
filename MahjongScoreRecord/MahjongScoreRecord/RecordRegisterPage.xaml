@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MahjongScoreRecord.RecordRegisterPage"
+             Title="対局登録" NavigationPage.HasNavigationBar="False" Padding="0"
+             Appearing="RecordRegisterPage_Appearing">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
+               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
+                <Label Text="対局登録" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+            </Frame>
+            <Frame HasShadow="True" BorderColor="Gray"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.85}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
+                <ScrollView>
+                    <StackLayout>
+                        <Label Text="対局名称" FontSize="Body"/>
+                        <Entry x:Name="RecordNameEntry" Placeholder="hoge" FontSize="Body" Keyboard="Chat"/>
+                        <Label Text="プレイヤー1" FontSize="Body"/>
+                        <Picker x:Name="PlayerPicker1" ItemDisplayBinding="{Binding PlayerName}" SelectedIndexChanged="PlayerPicker_SelectedIndexChanged"/>
+                        <Label Text="プレイヤー2" FontSize="Body"/>
+                        <Picker x:Name="PlayerPicker2" ItemDisplayBinding="{Binding PlayerName}" SelectedIndexChanged="PlayerPicker_SelectedIndexChanged"/>
+                        <Label Text="プレイヤー3" FontSize="Body"/>
+                        <Picker x:Name="PlayerPicker3" ItemDisplayBinding="{Binding PlayerName}" SelectedIndexChanged="PlayerPicker_SelectedIndexChanged"/>
+                        <Label Text="プレイヤー4" FontSize="Body"/>
+                        <Picker x:Name="PlayerPicker4" ItemDisplayBinding="{Binding PlayerName}" SelectedIndexChanged="PlayerPicker_SelectedIndexChanged"/>
+                        <Button x:Name="RegisterButton" Text="登録" Clicked="RegisterButton_Clicked"/>
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>
