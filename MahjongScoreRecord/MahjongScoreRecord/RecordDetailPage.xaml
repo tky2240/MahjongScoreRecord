@@ -10,8 +10,8 @@
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
                 <StackLayout>
-                    <Label x:Name="RecordNameLabel" Text="{Binding RecordName}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
-                    <Label x:Name="RecordTimeLabel" Text="{Binding RecordTime}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+                    <Label x:Name="RecordNameLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+                    <Label x:Name="RecordTimeLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
                 </StackLayout>
             </Frame>
             <Frame HasShadow="True" BorderColor="Gray"
@@ -46,10 +46,10 @@
                                             <Label Grid.Row="1" Grid.Column="1" Text="{Binding PlayerPoint2}" FontSize="Medium" VerticalOptions="Center"/>
                                             <Label Grid.Row="1" Grid.Column="2" Text="{Binding PlayerPoint3}" FontSize="Medium" VerticalOptions="Center"/>
                                             <Label Grid.Row="1" Grid.Column="3" Text="{Binding PlayerPoint4}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding AdjustmentPoint1}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding AdjustmentPoint2}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="2" Grid.Column="2" Text="{Binding AdjustmentPoint3}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding AdjustmentPoint4}" FontSize="Medium" VerticalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding AdjustmentScore1}" FontSize="Medium" VerticalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding AdjustmentScore2}" FontSize="Medium" VerticalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="2" Text="{Binding AdjustmentScore3}" FontSize="Medium" VerticalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding AdjustmentScore4}" FontSize="Medium" VerticalOptions="Center"/>
                                         </Grid>
                                     </StackLayout>
                                 </Frame>
@@ -61,7 +61,7 @@
             <Button x:Name="RegisterRecordDetailButton" Text="+" FontSize="Title" CornerRadius="300" BackgroundColor="#2196F3" TextColor="White" BorderColor="Black" BorderWidth="1"  WidthRequest="80" HeightRequest="80"
                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0, Constant=-120}"
                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0, Constant=-120}"
-                android:Button.UseDefaultPadding="true" android:Button.UseDefaultShadow="true"/>
+                android:Button.UseDefaultPadding="true" android:Button.UseDefaultShadow="true" Clicked="RegisterRecordDetailButton_Clicked"/>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

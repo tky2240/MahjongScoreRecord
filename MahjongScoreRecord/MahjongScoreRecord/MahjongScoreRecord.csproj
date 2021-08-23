@@ -21,6 +21,9 @@
     <Compile Update="LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="RecordDetailRegisterPage.xaml.cs">
+      <DependentUpon>RecordDetailRegisterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="RecordRegisterPage.xaml.cs">
       <DependentUpon>RecordRegisterPage.xaml</DependentUpon>
     </Compile>
@@ -40,6 +43,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="LoadingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="RecordDetailRegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="RecordRegisterPage.xaml">

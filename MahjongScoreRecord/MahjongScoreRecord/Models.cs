@@ -30,6 +30,10 @@ namespace MahjongScoreRecord.Models {
 		public int PlayerPoint2 { get; set; }
 		public int PlayerPoint3 { get; set; }
 		public int PlayerPoint4 { get; set; }
+		public int PlayerWind1 { get; set; }
+		public int PlayerWind2 { get; set; }
+		public int PlayerWind3 { get; set; }
+		public int PlayerWind4 { get; set; }
 		public int MatchCount { get; set; }
 	}
 	[Table("ThreePlayersRecord")]
@@ -50,6 +54,9 @@ namespace MahjongScoreRecord.Models {
 		public int PlayerPoint1 { get; set; }
 		public int PlayerPoint2 { get; set; }
 		public int PlayerPoint3 { get; set; }
+		public int PlayerWind1 { get; set; }
+		public int PlayerWind2 { get; set; }
+		public int PlayerWind3 { get; set; }
 		public int MatchCount { get; set; }
 	}
 }
