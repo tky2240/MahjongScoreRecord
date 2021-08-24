@@ -16,7 +16,7 @@
             </Frame>
             <Frame HasShadow="True" BorderColor="Gray"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
-               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.85}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
                 <ListView x:Name="RecordDetailListView" SeparatorColor="Gray" HasUnevenRows="True">
@@ -58,6 +58,10 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Frame>
+            <Button x:Name="BackButton" Text="戻る" CornerRadius="5" Clicked="BackButton_Clicked"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.2}"
+                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.0, Constant=20}"
+                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.9}"/>
             <Button x:Name="RegisterRecordDetailButton" Text="+" FontSize="Title" CornerRadius="300" BackgroundColor="#2196F3" TextColor="White" BorderColor="Black" BorderWidth="1"  WidthRequest="80" HeightRequest="80"
                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0, Constant=-120}"
                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0, Constant=-120}"

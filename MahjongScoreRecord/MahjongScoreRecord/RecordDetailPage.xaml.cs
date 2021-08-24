@@ -44,8 +44,12 @@ namespace MahjongScoreRecord {
         {
             await Navigation.PushModalAsync(new NavigationPage(new RecordDetailRegisterPage(_RecordListItem)), true);
         }
+
+        private async void BackButton_Clicked(object sender, EventArgs e) {
+            await Navigation.PopModalAsync(true);
+        }
     }
-    
+
     public class RecordDetailListViewItem {
         public RecordDetailListViewItem(int recordDetailID, PlayerNames playerNames, PlayerPoints playerPoints, AdjustmentPoints adjustmentPoints, int matchCount) {
             RecordDetailID = recordDetailID;

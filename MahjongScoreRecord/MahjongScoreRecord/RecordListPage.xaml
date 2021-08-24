@@ -39,7 +39,7 @@
                                             <Label Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
                                         <Frame Grid.Row="1" Grid.Column="1" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>    
+                                            <Label Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
                                         <Frame Grid.Row="1" Grid.Column="2" BorderColor="Gray" Padding="4" Margin="4">
                                             <Label Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>

@@ -49,6 +49,10 @@ namespace MahjongScoreRecord {
             db.Dispose();
             await Navigation.PushModalAsync(new NavigationPage(new RecordRegisterPage(players)),true);
         }
+
+        private void BackButton_Clicked(object sender, EventArgs e) {
+
+        }
     }
     public class RecordListItem {
         public RecordListItem(int recordID, string recordName, string playerName1, string playerName2, string playerName3, string playerName4, DateTime recordTime) {
