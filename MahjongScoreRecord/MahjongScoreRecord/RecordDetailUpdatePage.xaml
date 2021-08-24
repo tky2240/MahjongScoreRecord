@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MahjongScoreRecord.RecordDetailRegisterPage"
+             x:Class="MahjongScoreRecord.RecordDetailUpdatePage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-             Title="対局結果登録" NavigationPage.HasNavigationBar="False" Padding="0">
+             Title="対局結果登録" NavigationPage.HasNavigationBar="False" Padding="0"
+             Appearing="RecordDetailUpdatePage_Appearing">
     <ContentPage.Content>
         <RelativeLayout>
             <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
@@ -86,7 +87,7 @@
                             <Label x:Name="AdjustmentScore4Label" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
-                        <Button x:Name="RegisterButton" Text="登録" Clicked="RegisterButton_Clicked"/>
+                        <Button x:Name="UpdateButton" Text="更新" Clicked="UpdateButton_Clicked"/>
                     </StackLayout>
                 </ScrollView>
             </Frame>

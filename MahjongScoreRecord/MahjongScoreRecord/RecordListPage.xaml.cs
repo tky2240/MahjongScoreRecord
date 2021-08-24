@@ -23,7 +23,7 @@ namespace MahjongScoreRecord {
             RecordListItem selectedItem = (RecordListItem)listView.SelectedItem;
             await DisplayAlert("選択", selectedItem.RecordName, "OK");
             listView.SelectedItem = null;
-            await Navigation.PushModalAsync(new NavigationPage(new RecordDetailPage(selectedItem)));
+            await Navigation.PushModalAsync(new NavigationPage(new RecordDetailListPage(selectedItem)));
         }
 
         private async void RecordListPage_Appearing(object sender, EventArgs e) {

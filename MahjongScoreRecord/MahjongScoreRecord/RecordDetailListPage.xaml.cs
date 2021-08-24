@@ -10,11 +10,11 @@ using SQLite;
 
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RecordDetailPage : ContentPage {
+    public partial class RecordDetailListPage : ContentPage {
         private readonly int _RecordID;
         private readonly PlayerNames _PlayerNames;
         private readonly RecordListItem _RecordListItem;
-        public RecordDetailPage(RecordListItem record) {
+        public RecordDetailListPage(RecordListItem record) {
             InitializeComponent();
             _RecordListItem = record;
             _RecordID = _RecordListItem.RecordID;
@@ -29,10 +29,10 @@ namespace MahjongScoreRecord {
             List<Player> players = db.Table<Player>().ToList();
             FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
             db.Dispose();
-            List<RecordDetailListViewItem> recordDetailListViewItems = new List<RecordDetailListViewItem>();
+            List<RecordDetailListItem> recordDetailListViewItems = new List<RecordDetailListItem>();
             fourPlayersRecordDetails.ForEach(detail => {
                 PlayerPoints playerPoints = new PlayerPoints(detail.PlayerPoint1, detail.PlayerPoint2, detail.PlayerPoint3, detail.PlayerPoint4);
-                recordDetailListViewItems.Add(new RecordDetailListViewItem(detail.RecordDetailID, _PlayerNames, playerPoints, 
+                recordDetailListViewItems.Add(new RecordDetailListItem(detail.RecordDetailID, _PlayerNames, playerPoints, 
                                               new AdjustmentPoints(playerPoints, new PlayerWinds((Winds)detail.PlayerWind1, (Winds)detail.PlayerWind2, (Winds)detail.PlayerWind3, (Winds)detail.PlayerWind4)),
                                               detail.MatchCount));
             });
@@ -48,10 +48,17 @@ namespace MahjongScoreRecord {
         private async void BackButton_Clicked(object sender, EventArgs e) {
             await Navigation.PopModalAsync(true);
         }
+
+        private async void RecordDetailListView_ItemTapped(object sender, ItemTappedEventArgs e) {
+            ListView recordDetailListView = (ListView)sender;
+            if(recordDetailListView.SelectedItem != null) {
+                await Navigation.PushModalAsync(new NavigationPage(new RecordDetailUpdatePage((RecordDetailListItem)recordDetailListView.SelectedItem)), true);
+            }
+        }
     }
 
-    public class RecordDetailListViewItem {
-        public RecordDetailListViewItem(int recordDetailID, PlayerNames playerNames, PlayerPoints playerPoints, AdjustmentPoints adjustmentPoints, int matchCount) {
+    public class RecordDetailListItem {
+        public RecordDetailListItem(int recordDetailID, PlayerNames playerNames, PlayerPoints playerPoints, AdjustmentPoints adjustmentPoints, int matchCount) {
             RecordDetailID = recordDetailID;
             PlayerName1 = playerNames.PlayerName1;
             PlayerName2 = playerNames.PlayerName2;

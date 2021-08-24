@@ -21,8 +21,14 @@
     <Compile Update="LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="RecordDetailUpdatePage.xaml.cs">
+      <DependentUpon>RecordDetailUpdatePage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="RecordDetailRegisterPage.xaml.cs">
       <DependentUpon>RecordDetailRegisterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="RecordUpdatePage.xaml.cs">
+      <DependentUpon>RecordUpdatePage.xaml</DependentUpon>
     </Compile>
     <Compile Update="RecordRegisterPage.xaml.cs">
       <DependentUpon>RecordRegisterPage.xaml</DependentUpon>
@@ -30,8 +36,8 @@
     <Compile Update="PlayerListPage.xaml.cs">
       <DependentUpon>PlayerListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="RecordDetailPage.xaml.cs">
-      <DependentUpon>RecordDetailPage.xaml</DependentUpon>
+    <Compile Update="RecordDetailListPage.xaml.cs">
+      <DependentUpon>RecordDetailListPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="RecordListPage.xaml.cs">
       <DependentUpon>RecordListPage.xaml</DependentUpon>
@@ -51,7 +57,7 @@
     <EmbeddedResource Update="PlayerListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="RecordDetailPage.xaml">
+    <EmbeddedResource Update="RecordDetailListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="RecordListPage.xaml">

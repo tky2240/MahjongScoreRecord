@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MahjongScoreRecord.RecordDetailPage"
+             x:Class="MahjongScoreRecord.RecordDetailListPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              Appearing="RecordDetailPage_Appearing">
     <ContentPage.Content>
@@ -19,7 +19,7 @@
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
-                <ListView x:Name="RecordDetailListView" SeparatorColor="Gray" HasUnevenRows="True">
+                <ListView x:Name="RecordDetailListView" SeparatorColor="Gray" HasUnevenRows="True" ItemTapped="RecordDetailListView_ItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
