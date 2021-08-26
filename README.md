@@ -10,4 +10,4 @@ Record MahjongScores
 * PCLStorage 1.0.2
 * sqlite-net-pcl 1.7.335
 * Xamarin.Essentials 1.7.0
-* Xamarin.Forms 5.0.0.208.
+* Xamarin.Forms 5.0.0.2083
