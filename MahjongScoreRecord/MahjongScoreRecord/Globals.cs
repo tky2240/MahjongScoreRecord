@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+﻿using MahjongScoreRecord.Models;
 using PCLStorage;
 using SQLite;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using MahjongScoreRecord.Models;
 
 namespace MahjongScoreRecord {
-    public enum Winds
-    {
+    public enum Winds {
         None = 0,
         East = 1,
         South = 2,
@@ -36,7 +34,7 @@ namespace MahjongScoreRecord {
                 dbFile = await Globals.rootFolder.CreateFileAsync(Globals.dbFileName, CreationCollisionOption.ReplaceExisting);
             }
             SQLiteConnection db = new SQLiteConnection(dbFile.Path);
-            db.CreateTables(types: new Type[] { typeof(Player), typeof(FourPlayersRecord), typeof(FourPlayersRecordDetail), typeof(ThreePlayersRecord), typeof(ThreePlayersRecordDetail) });
+            db.CreateTables(types: new Type[] { typeof(Player), typeof(FourPlayersRecord), typeof(FourPlayersRecordDetail), typeof(ThreePlayersRecord), typeof(ThreePlayersRecordDetail), typeof(FourPlayersBonus), typeof(ThreePlayersBonus) });
             db.Dispose();
             return;
         }
@@ -46,10 +44,8 @@ namespace MahjongScoreRecord {
             return db;
         }
     }
-    public class PlayerNames
-    {
-        public PlayerNames(string playerName1, string playerName2, string playerName3, string playerName4)
-        {
+    public class PlayerNames {
+        public PlayerNames(string playerName1, string playerName2, string playerName3, string playerName4) {
             PlayerName1 = playerName1;
             PlayerName2 = playerName2;
             PlayerName3 = playerName3;
@@ -60,10 +56,8 @@ namespace MahjongScoreRecord {
         public string PlayerName3 { get; }
         public string PlayerName4 { get; }
     }
-    public class PlayerWinds
-    {
-        public PlayerWinds(Winds playerWind1, Winds playerWind2, Winds playerWind3, Winds playerWind4)
-        {
+    public class PlayerWinds {
+        public PlayerWinds(Winds playerWind1, Winds playerWind2, Winds playerWind3, Winds playerWind4) {
             PlayerWind1 = playerWind1;
             PlayerWind2 = playerWind2;
             PlayerWind3 = playerWind3;
@@ -75,10 +69,8 @@ namespace MahjongScoreRecord {
         public Winds PlayerWind4 { get; }
 
     }
-    public class PlayerPoints
-    {
-        public PlayerPoints(int playerPoint1, int playerPoint2, int playerPoint3, int playerPoint4)
-        {
+    public class PlayerPoints {
+        public PlayerPoints(int playerPoint1, int playerPoint2, int playerPoint3, int playerPoint4) {
             PlayerPoint1 = playerPoint1;
             PlayerPoint2 = playerPoint2;
             PlayerPoint3 = playerPoint3;
@@ -89,16 +81,14 @@ namespace MahjongScoreRecord {
         public int PlayerPoint3 { get; }
         public int PlayerPoint4 { get; }
     }
-    public class AdjustmentPoints
-    {
+    public class AdjustmentPoints {
         private readonly int Bonus1 = 20000;
         private readonly int Bonus2 = 10000;
         private readonly int Bonus3 = -10000;
         private readonly int Bonus4 = -20000;
         private readonly int TopPrize = 20000;
         private readonly int Kaeshi = 30000;
-        public AdjustmentPoints(PlayerPoints playerPoints, PlayerWinds playerWinds)
-        {
+        public AdjustmentPoints(PlayerPoints playerPoints, PlayerWinds playerWinds) {
             List<(int player, int wind, int point)> pointAndPlayers = new List<(int, int, int)>() { ( 1, (int)playerWinds.PlayerWind1, playerPoints.PlayerPoint1 ),
                                                                                                     ( 2, (int)playerWinds.PlayerWind2, playerPoints.PlayerPoint2 ),
                                                                                                     ( 3, (int)playerWinds.PlayerWind3, playerPoints.PlayerPoint3 ),

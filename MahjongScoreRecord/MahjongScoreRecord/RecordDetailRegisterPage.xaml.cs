@@ -1,38 +1,34 @@
-﻿using System;
+﻿using MahjongScoreRecord.Models;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SQLite;
-using MahjongScoreRecord.Models;
 
-namespace MahjongScoreRecord
-{
+namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RecordDetailRegisterPage : ContentPage
-    {
+    public partial class RecordDetailRegisterPage : ContentPage {
         //private readonly RecordListItem _RecordListItem;
         private readonly List<Entry> _PlayerPointEntries;
         private readonly List<Picker> _WindPickers;
         private readonly int _RecordID;
 
-        public RecordDetailRegisterPage(int recordID)
-        {
+        public RecordDetailRegisterPage(int recordID) {
             InitializeComponent();
             _RecordID = recordID;
             _PlayerPointEntries = new List<Entry>() { PlayerPoint1Entry, PlayerPoint2Entry, PlayerPoint3Entry, PlayerPoint4Entry };
             _WindPickers = new List<Picker>() { WindPicker1, WindPicker2, WindPicker3, WindPicker4 };
             int i = 0;
-            _WindPickers.ForEach(picker => { picker.ItemsSource = Globals.winds;
-                                             picker.SelectedIndex = i;
-                                             i++;
-            });   
+            _WindPickers.ForEach(picker => {
+                picker.ItemsSource = Globals.winds;
+                picker.SelectedIndex = i;
+                i++;
+            });
         }
         private async void RecordDetailRegisterPage_Appearing(object sender, EventArgs e) {
-            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
                 List<Player> players = db.Table<Player>().ToList();
                 PlayerName1Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName;
@@ -41,19 +37,14 @@ namespace MahjongScoreRecord
                 PlayerName4Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName;
             }
         }
-        private void PlayerPointEntry_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        private void PlayerPointEntry_TextChanged(object sender, TextChangedEventArgs e) {
             Entry playerPointEntry = (Entry)sender;
-            if (!string.IsNullOrEmpty(playerPointEntry.Text)){
-                if (!Regex.IsMatch(playerPointEntry.Text, @"^-?\d+$"))
-                {
+            if (!string.IsNullOrEmpty(playerPointEntry.Text)) {
+                if (!Regex.IsMatch(playerPointEntry.Text, @"^-?\d+$")) {
 
-                    if (Regex.IsMatch(playerPointEntry.Text, @"^-.*$"))
-                    {
+                    if (Regex.IsMatch(playerPointEntry.Text, @"^-.*$")) {
                         playerPointEntry.Text = "-" + Regex.Replace(playerPointEntry.Text.Substring(1), @"[^\d]*", "");
-                    }
-                    else
-                    {
+                    } else {
                         playerPointEntry.Text = Regex.Replace(playerPointEntry.Text, @"[^\d]*", "");
                     }
 
@@ -61,11 +52,9 @@ namespace MahjongScoreRecord
             }
         }
 
-        private void PlayerPointEntry_Unfocused(object sender, FocusEventArgs e)
-        {
+        private void PlayerPointEntry_Unfocused(object sender, FocusEventArgs e) {
             Entry playerPointEntry = (Entry)sender;
-            if (int.TryParse(playerPointEntry.Text, out int point))
-            {
+            if (int.TryParse(playerPointEntry.Text, out int point)) {
                 playerPointEntry.Text = point.ToString();
 
                 if (_PlayerPointEntries.All(entry => !string.IsNullOrEmpty(entry.Text))) {
@@ -87,9 +76,7 @@ namespace MahjongScoreRecord
                         return;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 playerPointEntry.Text = string.Empty;
             }
             AdjustmentScore1Label.BindingContext = null;
@@ -123,27 +110,22 @@ namespace MahjongScoreRecord
             AdjustmentScore4Label.BindingContext = null;
         }
 
-        private async void RegisterButton_Clicked(object sender, EventArgs e)
-        {
-            if(_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() != 4)
-            {
+        private async void RegisterButton_Clicked(object sender, EventArgs e) {
+            if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() != 4) {
                 await DisplayAlert("エラー", "風を正しく選択してください", "OK");
                 return;
             }
-            if (_PlayerPointEntries.Any(entry => string.IsNullOrEmpty(entry.Text)))
-            {
+            if (_PlayerPointEntries.Any(entry => string.IsNullOrEmpty(entry.Text))) {
                 await DisplayAlert("エラー", "全得点を正しく入力してください", "OK");
                 return;
             }
 
             SQLiteConnection db = await DBOperations.ConnectDB();
             int matchCount = 0;
-            if (db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Any())
-            {
+            if (db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Any()) {
                 matchCount = db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Select(detail => detail.MatchCount).Max();
             }
-            db.Insert(new FourPlayersRecordDetail()
-            {
+            db.Insert(new FourPlayersRecordDetail() {
                 RecordID = _RecordID,
                 PlayerPoint1 = int.Parse(PlayerPoint1Entry.Text),
                 PlayerPoint2 = int.Parse(PlayerPoint2Entry.Text),

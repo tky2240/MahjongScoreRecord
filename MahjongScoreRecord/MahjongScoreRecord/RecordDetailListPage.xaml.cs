@@ -1,12 +1,10 @@
-﻿using System;
+﻿using MahjongScoreRecord.Models;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using MahjongScoreRecord.Models;
-using SQLite;
 
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -32,7 +30,7 @@ namespace MahjongScoreRecord {
             List<RecordDetailListItem> recordDetailListViewItems = new List<RecordDetailListItem>();
             fourPlayersRecordDetails.ForEach(detail => {
                 PlayerPoints playerPoints = new PlayerPoints(detail.PlayerPoint1, detail.PlayerPoint2, detail.PlayerPoint3, detail.PlayerPoint4);
-                recordDetailListViewItems.Add(new RecordDetailListItem(detail.RecordDetailID, playerNames, playerPoints, 
+                recordDetailListViewItems.Add(new RecordDetailListItem(detail.RecordDetailID, playerNames, playerPoints,
                                               new AdjustmentPoints(playerPoints, new PlayerWinds((Winds)detail.PlayerWind1, (Winds)detail.PlayerWind2, (Winds)detail.PlayerWind3, (Winds)detail.PlayerWind4)),
                                               detail.MatchCount));
             });
@@ -40,26 +38,22 @@ namespace MahjongScoreRecord {
             db.Dispose();
         }
 
-        private async void RegisterRecordDetailButton_Clicked(object sender, EventArgs e)
-        {
+        private async void RegisterRecordDetailButton_Clicked(object sender, EventArgs e) {
             await Navigation.PushModalAsync(new NavigationPage(new RecordDetailRegisterPage(_RecordID)), true);
         }
 
-        private async void BackButton_Clicked(object sender, EventArgs e)
-        {
+        private async void BackButton_Clicked(object sender, EventArgs e) {
             await Navigation.PopModalAsync(true);
         }
 
-        private async void RecordDetailListView_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
+        private async void RecordDetailListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             ListView recordDetailListView = (ListView)sender;
-            if(recordDetailListView.SelectedItem != null) {
+            if (recordDetailListView.SelectedItem != null) {
                 await Navigation.PushModalAsync(new NavigationPage(new RecordDetailUpdatePage((RecordDetailListItem)recordDetailListView.SelectedItem)), true);
             }
         }
 
-        private async void EditButton_Clicked(object sender, EventArgs e) 
-        {
+        private async void EditButton_Clicked(object sender, EventArgs e) {
             SQLiteConnection db = await DBOperations.ConnectDB();
             List<Player> players = db.Table<Player>().ToList();
             FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
@@ -67,10 +61,8 @@ namespace MahjongScoreRecord {
             await Navigation.PushModalAsync(new NavigationPage(new RecordUpdatePage(players, fourPlayersRecord)), true);
         }
 
-        private async void DeleteButton_Clicked(object sender, EventArgs e)
-        {
-            if (await DisplayAlert("削除確認",$"対局名「{RecordNameLabel.Text}」\n記録日「{RecordTimeLabel.Text}」\n削除してもよろしいですか？","Yes","No"))
-            {
+        private async void DeleteButton_Clicked(object sender, EventArgs e) {
+            if (await DisplayAlert("削除確認", $"対局名「{RecordNameLabel.Text}」\n記録日「{RecordTimeLabel.Text}」\n削除してもよろしいですか？", "Yes", "No")) {
                 SQLiteConnection db = await DBOperations.ConnectDB();
                 db.Table<FourPlayersRecordDetail>().Delete(detail => detail.RecordID == _RecordID);
                 db.Table<FourPlayersRecord>().Delete(record => record.RecordID == _RecordID);
@@ -81,8 +73,7 @@ namespace MahjongScoreRecord {
     }
 
     public class RecordDetailListItem {
-        public RecordDetailListItem(int recordDetailID, PlayerNames playerNames, PlayerPoints playerPoints, AdjustmentPoints adjustmentPoints, int matchCount) 
-        {
+        public RecordDetailListItem(int recordDetailID, PlayerNames playerNames, PlayerPoints playerPoints, AdjustmentPoints adjustmentPoints, int matchCount) {
             RecordDetailID = recordDetailID;
             PlayerName1 = playerNames.PlayerName1;
             PlayerName2 = playerNames.PlayerName2;

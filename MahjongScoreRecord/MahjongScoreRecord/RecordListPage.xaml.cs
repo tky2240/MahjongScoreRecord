@@ -1,12 +1,10 @@
-﻿using System;
+﻿using MahjongScoreRecord.Models;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SQLite;
-using MahjongScoreRecord.Models;
 
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -17,7 +15,7 @@ namespace MahjongScoreRecord {
 
         private async void RecordListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             ListView listView = (ListView)sender;
-            if(listView.SelectedItem == null) {
+            if (listView.SelectedItem == null) {
                 return;
             }
             RecordListItem selectedItem = (RecordListItem)listView.SelectedItem;
@@ -32,7 +30,7 @@ namespace MahjongScoreRecord {
             List<Player> players = db.Table<Player>().ToList();
             List<RecordListItem> recordListItems = new List<RecordListItem>();
             fourPlayersRecords.ForEach(record => {
-                recordListItems.Add(new RecordListItem( record.RecordID,
+                recordListItems.Add(new RecordListItem(record.RecordID,
                                                         record.RecordName,
                                                         players.First(player => player.PlayerID == record.PlayerID1).PlayerName,
                                                         players.First(player => player.PlayerID == record.PlayerID2).PlayerName,
@@ -47,7 +45,7 @@ namespace MahjongScoreRecord {
             SQLiteConnection db = await DBOperations.ConnectDB();
             List<Player> players = db.Table<Player>().ToList();
             db.Dispose();
-            await Navigation.PushModalAsync(new NavigationPage(new RecordRegisterPage(players)),true);
+            await Navigation.PushModalAsync(new NavigationPage(new RecordRegisterPage(players)), true);
         }
 
         private void BackButton_Clicked(object sender, EventArgs e) {

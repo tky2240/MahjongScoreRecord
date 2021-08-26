@@ -1,13 +1,11 @@
-﻿using System;
+﻿using MahjongScoreRecord.Models;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using MahjongScoreRecord.Models;
-using System.Text.RegularExpressions;
-using SQLite;
 
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -18,7 +16,7 @@ namespace MahjongScoreRecord {
             InitializeComponent();
             _FourPlayersRecord = fourPlayersRecord;
             RecordNameEntry.Text = _FourPlayersRecord.RecordName;
-            _PlayerPickers = new List<Picker>() { PlayerPicker1, PlayerPicker2, PlayerPicker3, PlayerPicker4};
+            _PlayerPickers = new List<Picker>() { PlayerPicker1, PlayerPicker2, PlayerPicker3, PlayerPicker4 };
             _PlayerPickers.ForEach(picker => picker.ItemsSource = players);
             PlayerPicker1.SelectedItem = players.First(player => player.PlayerID == _FourPlayersRecord.PlayerID1);
             PlayerPicker2.SelectedItem = players.First(player => player.PlayerID == _FourPlayersRecord.PlayerID2);
@@ -55,10 +53,10 @@ namespace MahjongScoreRecord {
 
         private void PlayerPicker_SelectedIndexChanged(object sender, EventArgs e) {
             Picker changedPicker = (Picker)sender;
-            if(changedPicker.SelectedItem != null) {
-               if(_PlayerPickers.Where(picker => picker != changedPicker).Any(picker => picker.SelectedItem == changedPicker.SelectedItem)) {
+            if (changedPicker.SelectedItem != null) {
+                if (_PlayerPickers.Where(picker => picker != changedPicker).Any(picker => picker.SelectedItem == changedPicker.SelectedItem)) {
                     changedPicker.SelectedItem = null;
-               }
+                }
             }
         }
         private async void BackButton_Clicked(object sender, EventArgs e) {

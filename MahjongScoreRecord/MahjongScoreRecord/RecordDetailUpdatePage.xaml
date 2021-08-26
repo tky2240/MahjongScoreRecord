@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MahjongScoreRecord.RecordDetailUpdatePage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-             Title="対局結果登録" NavigationPage.HasNavigationBar="False" Padding="0"
+             Title="対局結果更新" NavigationPage.HasNavigationBar="False" Padding="0"
              Appearing="RecordDetailUpdatePage_Appearing">
     <ContentPage.Content>
         <RelativeLayout>
@@ -88,6 +88,7 @@
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
                         <Button x:Name="UpdateButton" Text="更新" Clicked="UpdateButton_Clicked"/>
+                        <Button x:Name="DeleteButton" Text="削除" Clicked="DeleteButton_Clicked"/>
                     </StackLayout>
                 </ScrollView>
             </Frame>

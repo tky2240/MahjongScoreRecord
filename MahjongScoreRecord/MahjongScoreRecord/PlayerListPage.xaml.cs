@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MahjongScoreRecord.Models;
+using SQLite;
+using System;
+using System.Text.RegularExpressions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SQLite;
-using MahjongScoreRecord.Models;
-using System.Text.RegularExpressions;
 
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -26,7 +22,7 @@ namespace MahjongScoreRecord {
 
         private async void RegisterPlayerButton_Clicked(object sender, EventArgs e) {
             string playerName = await DisplayPromptAsync("雀士名", "登録する雀士の名前を入力してください", "OK", "Cancel", "hoge", 64, Keyboard.Text, "");
-            if(playerName == null) {
+            if (playerName == null) {
                 return;
             }
             if (Regex.IsMatch(playerName, @"^\s*$")) {
