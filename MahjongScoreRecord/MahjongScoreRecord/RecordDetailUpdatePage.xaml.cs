@@ -10,36 +10,42 @@ using Xamarin.Forms.Xaml;
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecordDetailUpdatePage : ContentPage {
-        private readonly RecordDetailListItem _RecordDetailListItem;
         private readonly List<Entry> _PlayerPointEntries;
         private readonly List<Picker> _WindPickers;
+        private readonly int _RecordDetailID;
 
-        public RecordDetailUpdatePage(RecordDetailListItem record) {
+        public RecordDetailUpdatePage(int recordDetailID) {
             InitializeComponent();
-            _RecordDetailListItem = record;
+            _RecordDetailID = recordDetailID;
             _PlayerPointEntries = new List<Entry>() { PlayerPoint1Entry, PlayerPoint2Entry, PlayerPoint3Entry, PlayerPoint4Entry };
             _WindPickers = new List<Picker>() { WindPicker1, WindPicker2, WindPicker3, WindPicker4 };
         }
         private async void RecordDetailUpdatePage_Appearing(object sender, EventArgs e) {
-            SQLiteConnection db = await DBOperations.ConnectDB();
-            FourPlayersRecordDetail fourPlayersRecordDetail = db.Table<FourPlayersRecordDetail>().First(detail => detail.RecordDetailID == _RecordDetailListItem.RecordDetailID);
-            PlayerName1Label.BindingContext = _RecordDetailListItem.PlayerName1;
-            PlayerName2Label.BindingContext = _RecordDetailListItem.PlayerName2;
-            PlayerName3Label.BindingContext = _RecordDetailListItem.PlayerName3;
-            PlayerName4Label.BindingContext = _RecordDetailListItem.PlayerName4;
-            _WindPickers.ForEach(picker => picker.ItemsSource = Globals.winds);
-            WindPicker1.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind1);
-            WindPicker2.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind2);
-            WindPicker3.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind3);
-            WindPicker4.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind4);
-            PlayerPoint1Entry.Text = _RecordDetailListItem.PlayerPoint1.ToString();
-            PlayerPoint2Entry.Text = _RecordDetailListItem.PlayerPoint2.ToString();
-            PlayerPoint3Entry.Text = _RecordDetailListItem.PlayerPoint3.ToString();
-            PlayerPoint4Entry.Text = _RecordDetailListItem.PlayerPoint4.ToString();
-            AdjustmentScore1Label.BindingContext = _RecordDetailListItem.AdjustmentScore1;
-            AdjustmentScore2Label.BindingContext = _RecordDetailListItem.AdjustmentScore2;
-            AdjustmentScore3Label.BindingContext = _RecordDetailListItem.AdjustmentScore3;
-            AdjustmentScore4Label.BindingContext = _RecordDetailListItem.AdjustmentScore4;
+            using(SQLiteConnection db = await DBOperations.ConnectDB()){
+                FourPlayersRecordDetail fourPlayersRecordDetail = db.Table<FourPlayersRecordDetail>().First(detail => detail.RecordDetailID == _RecordDetailID);
+                FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == fourPlayersRecordDetail.RecordID);
+                List<Player> players = db.Table<Player>().ToList();
+                PlayerName1Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName;
+                PlayerName2Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID2).PlayerName;
+                PlayerName3Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID3).PlayerName;
+                PlayerName4Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName;
+                _WindPickers.ForEach(picker => picker.ItemsSource = Globals.winds);
+                WindPicker1.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind1);
+                WindPicker2.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind2);
+                WindPicker3.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind3);
+                WindPicker4.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind4);
+                PlayerPoint1Entry.Text = fourPlayersRecordDetail.PlayerPoint1.ToString();
+                PlayerPoint2Entry.Text = fourPlayersRecordDetail.PlayerPoint2.ToString();
+                PlayerPoint3Entry.Text = fourPlayersRecordDetail.PlayerPoint3.ToString();
+                PlayerPoint4Entry.Text = fourPlayersRecordDetail.PlayerPoint4.ToString();
+                PlayerPoints playerPoints = new PlayerPoints(fourPlayersRecordDetail.PlayerPoint1, fourPlayersRecordDetail.PlayerPoint2, fourPlayersRecordDetail.PlayerPoint3, fourPlayersRecordDetail.PlayerPoint4);
+                PlayerWinds playerWinds = new PlayerWinds((Winds)fourPlayersRecordDetail.PlayerWind1, (Winds)fourPlayersRecordDetail.PlayerWind2, (Winds)fourPlayersRecordDetail.PlayerWind3, (Winds)fourPlayersRecordDetail.PlayerWind4);
+                AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds);
+                AdjustmentScore1Label.BindingContext = adjustmentPoints.AdjustmentScore1;
+                AdjustmentScore2Label.BindingContext = adjustmentPoints.AdjustmentScore2;
+                AdjustmentScore3Label.BindingContext = adjustmentPoints.AdjustmentScore3;
+                AdjustmentScore4Label.BindingContext = adjustmentPoints.AdjustmentScore4;
+            }
         }
 
         private void PlayerPointEntry_TextChanged(object sender, TextChangedEventArgs e) {
@@ -124,30 +130,46 @@ namespace MahjongScoreRecord {
                 await DisplayAlert("エラー", "全得点を正しく入力してください", "OK");
                 return;
             }
-
-            SQLiteConnection db = await DBOperations.ConnectDB();
-            FourPlayersRecordDetail fourPlayersRecordDetail = db.Table<FourPlayersRecordDetail>().First(detail => detail.RecordDetailID == _RecordDetailListItem.RecordDetailID);
-            db.Update(new FourPlayersRecordDetail() {
-                RecordDetailID = _RecordDetailListItem.RecordDetailID,
-                RecordID = fourPlayersRecordDetail.RecordID,
-                PlayerPoint1 = int.Parse(PlayerPoint1Entry.Text),
-                PlayerPoint2 = int.Parse(PlayerPoint2Entry.Text),
-                PlayerPoint3 = int.Parse(PlayerPoint3Entry.Text),
-                PlayerPoint4 = int.Parse(PlayerPoint4Entry.Text),
-                PlayerWind1 = (int)((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
-                PlayerWind2 = (int)((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
-                PlayerWind3 = (int)((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
-                PlayerWind4 = (int)((KeyValuePair<Winds, string>)WindPicker4.SelectedItem).Key,
-                MatchCount = fourPlayersRecordDetail.MatchCount
-            });
-            db.Dispose();
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
+                FourPlayersRecordDetail fourPlayersRecordDetail = db.Table<FourPlayersRecordDetail>().First(detail => detail.RecordDetailID == _RecordDetailID);
+                db.Update(new FourPlayersRecordDetail() {
+                    RecordDetailID = _RecordDetailID,
+                    RecordID = fourPlayersRecordDetail.RecordID,
+                    PlayerPoint1 = int.Parse(PlayerPoint1Entry.Text),
+                    PlayerPoint2 = int.Parse(PlayerPoint2Entry.Text),
+                    PlayerPoint3 = int.Parse(PlayerPoint3Entry.Text),
+                    PlayerPoint4 = int.Parse(PlayerPoint4Entry.Text),
+                    PlayerWind1 = (int)((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
+                    PlayerWind2 = (int)((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
+                    PlayerWind3 = (int)((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
+                    PlayerWind4 = (int)((KeyValuePair<Winds, string>)WindPicker4.SelectedItem).Key,
+                    MatchCount = fourPlayersRecordDetail.MatchCount
+                });
+            }
             await Navigation.PopModalAsync(true);
         }
         private async void DeleteButton_Clicked(object sender, EventArgs e) {
             if (await DisplayAlert("削除確認", "この対局結果を削除しますか？", "Yes", "No")) {
                 using (SQLiteConnection db = await DBOperations.ConnectDB()) {
-
+                    int matchCount = db.Table<FourPlayersRecordDetail>().First(detail => detail.RecordDetailID == _RecordDetailID).MatchCount;
+                    db.Table<FourPlayersRecordDetail>().Delete(detail => detail.RecordDetailID == _RecordDetailID);
+                    db.UpdateAll(
+                        db.Table<FourPlayersRecordDetail>().Where(detail => detail.MatchCount > matchCount).Select(detail => new FourPlayersRecordDetail() {
+                            RecordDetailID = detail.RecordDetailID,
+                            RecordID = detail.RecordID,
+                            PlayerPoint1 = detail.PlayerPoint1,
+                            PlayerPoint2 = detail.PlayerPoint2,
+                            PlayerPoint3 = detail.PlayerPoint3,
+                            PlayerPoint4 = detail.PlayerPoint4,
+                            PlayerWind1 = detail.PlayerWind1,
+                            PlayerWind2 = detail.PlayerWind2,
+                            PlayerWind3 = detail.PlayerWind3,
+                            PlayerWind4 = detail.PlayerWind4,
+                            MatchCount = detail.MatchCount - 1
+                        }).ToList()
+                    ); 
                 }
+                await Navigation.PopModalAsync(true);
             }
         }
 

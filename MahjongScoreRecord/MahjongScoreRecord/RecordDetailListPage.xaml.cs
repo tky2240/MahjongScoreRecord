@@ -49,7 +49,7 @@ namespace MahjongScoreRecord {
         private async void RecordDetailListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             ListView recordDetailListView = (ListView)sender;
             if (recordDetailListView.SelectedItem != null) {
-                await Navigation.PushModalAsync(new NavigationPage(new RecordDetailUpdatePage((RecordDetailListItem)recordDetailListView.SelectedItem)), true);
+                await Navigation.PushModalAsync(new NavigationPage(new RecordDetailUpdatePage(((RecordDetailListItem)recordDetailListView.SelectedItem).RecordDetailID)), true);
             }
         }
 
