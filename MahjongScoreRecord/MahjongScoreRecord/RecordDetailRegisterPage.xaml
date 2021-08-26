@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MahjongScoreRecord.RecordDetailRegisterPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-             Title="対局結果登録" NavigationPage.HasNavigationBar="False" Padding="0">
+             Title="対局結果登録" NavigationPage.HasNavigationBar="False" Padding="0"
+             Appearing="RecordDetailRegisterPage_Appearing">
     <ContentPage.Content>
         <RelativeLayout>
             <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"

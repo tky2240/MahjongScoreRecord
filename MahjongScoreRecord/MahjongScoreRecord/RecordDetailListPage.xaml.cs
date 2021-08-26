@@ -12,15 +12,9 @@ namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecordDetailListPage : ContentPage {
         private readonly int _RecordID;
-        private readonly PlayerNames _PlayerNames;
-        private readonly RecordListItem _RecordListItem;
-        public RecordDetailListPage(RecordListItem record) {
+        public RecordDetailListPage(int recordID) {
             InitializeComponent();
-            _RecordListItem = record;
-            _RecordID = _RecordListItem.RecordID;
-            _PlayerNames = new PlayerNames(_RecordListItem.PlayerName1, _RecordListItem.PlayerName2, _RecordListItem.PlayerName3, _RecordListItem.PlayerName4);
-            RecordNameLabel.BindingContext = _RecordListItem.RecordName;
-            RecordTimeLabel.BindingContext = _RecordListItem.RecordTime.ToString();
+            _RecordID = recordID;
         }
 
         private async void RecordDetailPage_Appearing(object sender, EventArgs e) {
@@ -29,10 +23,16 @@ namespace MahjongScoreRecord {
             List<Player> players = db.Table<Player>().ToList();
             FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
             db.Dispose();
+            RecordNameLabel.BindingContext = fourPlayersRecord.RecordName;
+            RecordTimeLabel.BindingContext = fourPlayersRecord.RecordTime.ToString();
+            PlayerNames playerNames = new PlayerNames(players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName,
+                                                      players.First(player => player.PlayerID == fourPlayersRecord.PlayerID2).PlayerName,
+                                                      players.First(player => player.PlayerID == fourPlayersRecord.PlayerID3).PlayerName,
+                                                      players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName);
             List<RecordDetailListItem> recordDetailListViewItems = new List<RecordDetailListItem>();
             fourPlayersRecordDetails.ForEach(detail => {
                 PlayerPoints playerPoints = new PlayerPoints(detail.PlayerPoint1, detail.PlayerPoint2, detail.PlayerPoint3, detail.PlayerPoint4);
-                recordDetailListViewItems.Add(new RecordDetailListItem(detail.RecordDetailID, _PlayerNames, playerPoints, 
+                recordDetailListViewItems.Add(new RecordDetailListItem(detail.RecordDetailID, playerNames, playerPoints, 
                                               new AdjustmentPoints(playerPoints, new PlayerWinds((Winds)detail.PlayerWind1, (Winds)detail.PlayerWind2, (Winds)detail.PlayerWind3, (Winds)detail.PlayerWind4)),
                                               detail.MatchCount));
             });
@@ -42,23 +42,47 @@ namespace MahjongScoreRecord {
 
         private async void RegisterRecordDetailButton_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new RecordDetailRegisterPage(_RecordListItem)), true);
+            await Navigation.PushModalAsync(new NavigationPage(new RecordDetailRegisterPage(_RecordID)), true);
         }
 
-        private async void BackButton_Clicked(object sender, EventArgs e) {
+        private async void BackButton_Clicked(object sender, EventArgs e)
+        {
             await Navigation.PopModalAsync(true);
         }
 
-        private async void RecordDetailListView_ItemTapped(object sender, ItemTappedEventArgs e) {
+        private async void RecordDetailListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
             ListView recordDetailListView = (ListView)sender;
             if(recordDetailListView.SelectedItem != null) {
                 await Navigation.PushModalAsync(new NavigationPage(new RecordDetailUpdatePage((RecordDetailListItem)recordDetailListView.SelectedItem)), true);
             }
         }
+
+        private async void EditButton_Clicked(object sender, EventArgs e) 
+        {
+            SQLiteConnection db = await DBOperations.ConnectDB();
+            List<Player> players = db.Table<Player>().ToList();
+            FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
+            db.Dispose();
+            await Navigation.PushModalAsync(new NavigationPage(new RecordUpdatePage(players, fourPlayersRecord)), true);
+        }
+
+        private async void DeleteButton_Clicked(object sender, EventArgs e)
+        {
+            if (await DisplayAlert("削除確認",$"対局名「{RecordNameLabel.Text}」\n記録日「{RecordTimeLabel.Text}」\n削除してもよろしいですか？","Yes","No"))
+            {
+                SQLiteConnection db = await DBOperations.ConnectDB();
+                db.Table<FourPlayersRecordDetail>().Delete(detail => detail.RecordID == _RecordID);
+                db.Table<FourPlayersRecord>().Delete(record => record.RecordID == _RecordID);
+                await DisplayAlert("削除完了", "削除が完了しました", "OK");
+                await Navigation.PopModalAsync(true);
+            }
+        }
     }
 
     public class RecordDetailListItem {
-        public RecordDetailListItem(int recordDetailID, PlayerNames playerNames, PlayerPoints playerPoints, AdjustmentPoints adjustmentPoints, int matchCount) {
+        public RecordDetailListItem(int recordDetailID, PlayerNames playerNames, PlayerPoints playerPoints, AdjustmentPoints adjustmentPoints, int matchCount) 
+        {
             RecordDetailID = recordDetailID;
             PlayerName1 = playerNames.PlayerName1;
             PlayerName2 = playerNames.PlayerName2;
@@ -96,7 +120,5 @@ namespace MahjongScoreRecord {
         public double AdjustmentScore3 { get; }
         public double AdjustmentScore4 { get; }
         public int MatchCount { get; }
-
     }
-
 }

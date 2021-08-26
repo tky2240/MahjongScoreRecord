@@ -4,7 +4,7 @@ using System.Text;
 using SQLite;
 
 namespace MahjongScoreRecord.Models {
-	[Table("Playaer")]
+	[Table("Player")]
 	public class Player {
 		[PrimaryKey, AutoIncrement]
 		public int PlayerID { get; set; }
@@ -58,5 +58,24 @@ namespace MahjongScoreRecord.Models {
 		public int PlayerWind2 { get; set; }
 		public int PlayerWind3 { get; set; }
 		public int MatchCount { get; set; }
+	}
+	public class FourPlayersBonus {
+		[PrimaryKey, AutoIncrement]
+		public int BonusID { get; set; }
+		public int OriginPoint { get; set; }
+		public int ReferencePoint { get; set; }
+		public int Bonus1 { get; set; }
+		public int Bonus2 { get; set; }
+		public int Bonus3 { get; set; }
+		public int Bonus4 { get; set; }
+	}
+	public class ThreePlayersBonus {
+		[PrimaryKey, AutoIncrement]
+		public int BonusID { get; set; }
+		public int OriginPoint { get; set; }
+		public int ReferencePoint { get; set; }
+		public int Bonus1 { get; set; }
+		public int Bonus2 { get; set; }
+		public int Bonus3 { get; set; }
 	}
 }

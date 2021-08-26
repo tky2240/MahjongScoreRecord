@@ -12,13 +12,13 @@ namespace MahjongScoreRecord {
     public partial class LoadingPage : ContentPage {
         public LoadingPage(Task loadTask, Page nextPage) {
             InitializeComponent();
-            waitLoading(loadTask, nextPage);
+            WaitLoading(loadTask, nextPage);
         }
 
-        private async void waitLoading(Task loadTask, Page nextPage) {
+        private async void WaitLoading(Task loadTask, Page nextPage) {
             await loadTask;
             await Task.Delay(1000);
-            Navigation.PushModalAsync(new NavigationPage(nextPage), true);
+            await Navigation.PushModalAsync(new NavigationPage(nextPage), true);
         }
     }
 }

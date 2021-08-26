@@ -9,10 +9,34 @@
             <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
-                <StackLayout>
-                    <Label x:Name="RecordNameLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
-                    <Label x:Name="RecordTimeLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
-                </StackLayout>
+                <RelativeLayout>
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="Center"
+                                 RelativeLayout.WidthConstraint ="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+                                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0}">
+                        <Label x:Name="RecordNameLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+                        <Label x:Name="RecordTimeLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+                    </StackLayout>
+                    <ImageButton x:Name="EditButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45"
+                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}"
+                                 Clicked="EditButton_Clicked">
+                        <ImageButton.Source>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="iOS, Android" Value="Edit.png"/>
+                                <On Platform="UWP" Value="Assets/Edit.png"/>
+                            </OnPlatform>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton x:Name="DeleteButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45"
+                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
+                                 Clicked="DeleteButton_Clicked">
+                        <ImageButton.Source>
+                            <OnPlatform x:TypeArguments="ImageSource">
+                                <On Platform="IOS, Android" Value="Delete.png"/>
+                                <On Platform="UWP" Value="Assets/Delete.png"/>
+                            </OnPlatform>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </RelativeLayout>
             </Frame>
             <Frame HasShadow="True" BorderColor="Gray"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"

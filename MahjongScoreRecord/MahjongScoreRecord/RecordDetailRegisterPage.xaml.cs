@@ -14,27 +14,33 @@ namespace MahjongScoreRecord
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecordDetailRegisterPage : ContentPage
     {
-        private readonly RecordListItem _RecordListItem;
+        //private readonly RecordListItem _RecordListItem;
         private readonly List<Entry> _PlayerPointEntries;
         private readonly List<Picker> _WindPickers;
+        private readonly int _RecordID;
 
-        public RecordDetailRegisterPage(RecordListItem record)
+        public RecordDetailRegisterPage(int recordID)
         {
             InitializeComponent();
-            _RecordListItem = record;
+            _RecordID = recordID;
             _PlayerPointEntries = new List<Entry>() { PlayerPoint1Entry, PlayerPoint2Entry, PlayerPoint3Entry, PlayerPoint4Entry };
             _WindPickers = new List<Picker>() { WindPicker1, WindPicker2, WindPicker3, WindPicker4 };
-            PlayerName1Label.BindingContext = _RecordListItem.PlayerName1;
-            PlayerName2Label.BindingContext = _RecordListItem.PlayerName2;
-            PlayerName3Label.BindingContext = _RecordListItem.PlayerName3;
-            PlayerName4Label.BindingContext = _RecordListItem.PlayerName4;
             int i = 0;
             _WindPickers.ForEach(picker => { picker.ItemsSource = Globals.winds;
                                              picker.SelectedIndex = i;
                                              i++;
             });   
         }
-
+        private async void RecordDetailRegisterPage_Appearing(object sender, EventArgs e) {
+            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
+                List<Player> players = db.Table<Player>().ToList();
+                PlayerName1Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName;
+                PlayerName2Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID2).PlayerName;
+                PlayerName3Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID3).PlayerName;
+                PlayerName4Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName;
+            }
+        }
         private void PlayerPointEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
             Entry playerPointEntry = (Entry)sender;
@@ -132,13 +138,13 @@ namespace MahjongScoreRecord
 
             SQLiteConnection db = await DBOperations.ConnectDB();
             int matchCount = 0;
-            if (db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordListItem.RecordID).Any())
+            if (db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Any())
             {
-                matchCount = db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordListItem.RecordID).Select(detail => detail.MatchCount).Max();
+                matchCount = db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Select(detail => detail.MatchCount).Max();
             }
             db.Insert(new FourPlayersRecordDetail()
             {
-                RecordID = _RecordListItem.RecordID,
+                RecordID = _RecordID,
                 PlayerPoint1 = int.Parse(PlayerPoint1Entry.Text),
                 PlayerPoint2 = int.Parse(PlayerPoint2Entry.Text),
                 PlayerPoint3 = int.Parse(PlayerPoint3Entry.Text),
@@ -155,7 +161,5 @@ namespace MahjongScoreRecord
         private async void BackButton_Clicked(object sender, EventArgs e) {
             await Navigation.PopModalAsync(true);
         }
-
-        
     }
 }
