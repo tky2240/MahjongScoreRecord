@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MahjongScoreRecord.RecordDetailListPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             NavigationPage.HasNavigationBar="False"
              Appearing="RecordDetailPage_Appearing">
     <ContentPage.Content>
         <RelativeLayout>
@@ -16,7 +17,7 @@
                         <Label x:Name="RecordNameLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
                         <Label x:Name="RecordTimeLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
                     </StackLayout>
-                    <ImageButton x:Name="EditButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45"
+                    <ImageButton x:Name="EditButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45" BackgroundColor="Transparent"
                                  RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}"
                                  Clicked="EditButton_Clicked">
                         <ImageButton.Source>
@@ -26,7 +27,7 @@
                             </OnPlatform>
                         </ImageButton.Source>
                     </ImageButton>
-                    <ImageButton x:Name="DeleteButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45"
+                    <ImageButton x:Name="DeleteButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45" BackgroundColor="Transparent"
                                  RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
                                  Clicked="DeleteButton_Clicked">
                         <ImageButton.Source>

@@ -15,11 +15,13 @@
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.85}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
-            <ListView x:Name="RecordListView" ItemTapped="RecordListView_ItemTapped" SeparatorColor="Gray" SeparatorVisibility="Default">
+            <ListView x:Name="RecordListView" ItemTapped="RecordListView_ItemTapped" SeparatorColor="Gray" SeparatorVisibility="Default" HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame CornerRadius="10" BackgroundColor="White" BorderColor="Gray" Margin="5" Padding="5">
+                            <Frame CornerRadius="10" BackgroundColor="White" BorderColor="Gray" Margin="5" Padding="5"
+                                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+                                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0}">
                                 <StackLayout>
                                     <Grid ColumnSpacing="1" RowSpacing="1">
                                         <Grid.ColumnDefinitions>

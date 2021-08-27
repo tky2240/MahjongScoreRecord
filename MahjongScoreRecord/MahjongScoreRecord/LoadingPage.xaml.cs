@@ -14,7 +14,7 @@ namespace MahjongScoreRecord {
         private async void WaitLoading(Task loadTask, Page nextPage) {
             await loadTask;
             await Task.Delay(1000);
-            await Navigation.PushModalAsync(new NavigationPage(nextPage), true);
+            Application.Current.MainPage = new NavigationPage(nextPage);
         }
     }
 }
