@@ -25,31 +25,29 @@ namespace MahjongScoreRecord {
         }
 
         private async void RecordListPage_Appearing(object sender, EventArgs e) {
-            SQLiteConnection db = await DBOperations.ConnectDB();
-            List<FourPlayersRecord> fourPlayersRecords = db.Table<FourPlayersRecord>().ToList();
-            List<Player> players = db.Table<Player>().ToList();
             List<RecordListItem> recordListItems = new List<RecordListItem>();
-            fourPlayersRecords.ForEach(record => {
-                recordListItems.Add(new RecordListItem(record.RecordID,
-                                                        record.RecordName,
-                                                        players.First(player => player.PlayerID == record.PlayerID1).PlayerName,
-                                                        players.First(player => player.PlayerID == record.PlayerID2).PlayerName,
-                                                        players.First(player => player.PlayerID == record.PlayerID3).PlayerName,
-                                                        players.First(player => player.PlayerID == record.PlayerID4).PlayerName,
-                                                        record.RecordTime));
-            });
+            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                List<FourPlayersRecord> fourPlayersRecords = db.Table<FourPlayersRecord>().ToList();
+                List<Player> players = db.Table<Player>().ToList();
+                fourPlayersRecords.ForEach(record => {
+                    recordListItems.Add(new RecordListItem(record.RecordID,
+                                                            record.RecordName,
+                                                            players.First(player => player.PlayerID == record.PlayerID1).PlayerName,
+                                                            players.First(player => player.PlayerID == record.PlayerID2).PlayerName,
+                                                            players.First(player => player.PlayerID == record.PlayerID3).PlayerName,
+                                                            players.First(player => player.PlayerID == record.PlayerID4).PlayerName,
+                                                            record.RecordTime));
+                });
+            }
             RecordListView.ItemsSource = recordListItems;
         }
 
         private async void RegisterRecordButton_Clicked(object sender, EventArgs e) {
-            SQLiteConnection db = await DBOperations.ConnectDB();
-            List<Player> players = db.Table<Player>().ToList();
-            db.Dispose();
+            List<Player> players = new List<Player>();
+            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                players = db.Table<Player>().ToList();
+            }
             await Navigation.PushModalAsync(new NavigationPage(new RecordRegisterPage(players)), true);
-        }
-
-        private void BackButton_Clicked(object sender, EventArgs e) {
-
         }
     }
     public class RecordListItem {

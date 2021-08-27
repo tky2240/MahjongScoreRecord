@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MahjongScoreRecord.PlayerDetailPage"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             Title="雀士詳細" NavigationPage.HasNavigationBar="False" Padding="0"
+             Appearing="PlayerDetailPage_Appearing">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
+               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
+                <Label Text="雀士詳細" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+            </Frame>
+            <Frame HasShadow="True" BorderColor="Gray"
+               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
+                <microcharts:ChartView x:Name="PlayerDetailChartView"/>
+            </Frame>
+            <Button x:Name="BackButton" Text="戻る" CornerRadius="5" Clicked="BackButton_Clicked"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.2}"
+                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.0, Constant=20}"
+                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.9}"/>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

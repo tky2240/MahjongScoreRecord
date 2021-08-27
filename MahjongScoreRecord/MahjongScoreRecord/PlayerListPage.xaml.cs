@@ -11,13 +11,16 @@ namespace MahjongScoreRecord {
         public PlayerListPage() {
             InitializeComponent();
         }
-
-        private void PlayerListView_ItemTapped(object sender, ItemTappedEventArgs e) {
+        private async void PlayerListPage_Appearing(object sender, EventArgs e) {
+            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                PlayerListView.ItemsSource = db.Table<Player>().ToList();
+            }
+        }
+        private async void PlayerListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             ListView listView = (ListView)sender;
             Player selectedPlayer = (Player)listView.SelectedItem;
             listView.SelectedItem = null;
-            DisplayAlert("Tapped", selectedPlayer.PlayerName, "OK");
-            //Navigation.PushModalAsync(new NavigationPage(new )
+            await Navigation.PushModalAsync(new NavigationPage(new PlayerDetailPage(selectedPlayer.PlayerID)), true);
         }
 
         private async void RegisterPlayerButton_Clicked(object sender, EventArgs e) {
@@ -29,17 +32,10 @@ namespace MahjongScoreRecord {
                 await DisplayAlert("エラー", "正しい名前を入力してください", "OK");
                 return;
             }
-            SQLiteConnection db = await DBOperations.ConnectDB();
-            db.Insert(new Player { PlayerName = playerName.Trim() });
-            RefreshList(db);
-        }
-        private async void PlayerListPage_Appearing(object sender, EventArgs e) {
-            SQLiteConnection db = await DBOperations.ConnectDB();
-            RefreshList(db);
-        }
-        private void RefreshList(SQLiteConnection db) {
-            PlayerListView.ItemsSource = db.Table<Player>().ToList(); ;
-            db.Dispose();
+            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                db.Insert(new Player { PlayerName = playerName.Trim() });
+                PlayerListView.ItemsSource = db.Table<Player>().ToList();
+            }
         }
     }
 }

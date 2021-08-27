@@ -11,15 +11,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microcharts.Forms" Version="1.0.0-preview1" />
     <PackageReference Include="PCLStorage" Version="1.0.2" />
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="PlayerDetailPage.xaml.cs">
+      <DependentUpon>PlayerDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="RecordDetailUpdatePage.xaml.cs">
       <DependentUpon>RecordDetailUpdatePage.xaml</DependentUpon>
@@ -46,6 +50,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="LoadingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="PlayerDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="RecordDetailRegisterPage.xaml">
