@@ -20,32 +20,19 @@ namespace MahjongScoreRecord {
 
         private void BonusEntry_TextChanged(object sender, TextChangedEventArgs e) {
             Entry bonusEntry = (Entry)sender;
-            if (!string.IsNullOrEmpty(bonusEntry.Text)) {
-                if (!int.TryParse(bonusEntry.Text, out int bonus)) {
-                    if (Regex.IsMatch(bonusEntry.Text, @"^-.*$")) {
-                        bonusEntry.Text = "-" + Regex.Replace(bonusEntry.Text.Substring(1), @"[^\d]*", "");
-                    } else {
-                        bonusEntry.Text = Regex.Replace(bonusEntry.Text, @"[^\d]*", "");
-                    }
-                } else {
-                    bonusEntry.Text = bonus.ToString();
-                }
+            string input = bonusEntry.Text;
+            if (!string.IsNullOrWhiteSpace(input)) {
+                bonusEntry.Text = PointStringConverter.DeleteNonNumericCharacterWithMinus(input);
             }
         }
         private void BonusEntry_Unfocused(object sender, FocusEventArgs e) {
             Entry bonusEntry = (Entry)sender;
-            if (bonusEntry.Text == "-") {
-                bonusEntry.Text = "0";
-            }
+            bonusEntry.Text = PointStringConverter.MinusSymbolToZero(bonusEntry.Text);
         }
         private void PointEntry_TextChanged(object sender, TextChangedEventArgs e) {
-            Entry bonusEntry = (Entry)sender;
-            if (!string.IsNullOrEmpty(bonusEntry.Text)) {
-                if (!int.TryParse(bonusEntry.Text, out int bonus)) {
-                    bonusEntry.Text = Regex.Replace(bonusEntry.Text, @"[^\d]*", "");
-                } else {
-                    bonusEntry.Text = bonus.ToString();
-                }
+            Entry pointEntry = (Entry)sender;
+            if (!string.IsNullOrWhiteSpace(pointEntry.Text)) {
+                pointEntry.Text = PointStringConverter.DeleteNonNumericCharacter(pointEntry.Text);
             }
         }
         private async void RegisterButton_Clicked(object sender, EventArgs e) {
@@ -67,7 +54,7 @@ namespace MahjongScoreRecord {
                     Bonus3 = int.Parse(BonusEntry3.Text),
                     Bonus4 = int.Parse(BonusEntry4.Text)
                 });
-                Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()] = db.Table<FourPlayersBonus>().Last().BonusID;
+                Globals.SetCurrentFourPlayersBonusID(db.Table<FourPlayersBonus>().Last().BonusID);
             }
             await Navigation.PopModalAsync(true);
         }

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using Xamarin.Forms;
 
 namespace MahjongScoreRecord {
     public enum BonusSettingActions {
@@ -34,6 +36,49 @@ namespace MahjongScoreRecord {
             new KeyValuePair<Winds , string>(Winds.West,"西" ),
             new KeyValuePair<Winds , string>(Winds.North,"北" )
         };
+        public static int GetCurrentFourPlayersBonusID() {
+            return (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
+        }
+        public static void SetCurrentFourPlayersBonusID(int bonusID) {
+            Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()] = bonusID;
+        }
+        public static int GetCurrentThreePlayersBonusID() {
+            return (int)Application.Current.Properties[StoreIDs.ThreePlayerBonus.ToString()];
+        }
+        public static void SetCurrentThreePlayersBonusID(int bonusID) {
+            Application.Current.Properties[StoreIDs.ThreePlayerBonus.ToString()] = bonusID;
+        }
+    }
+    public static class PointStringConverter {
+        public static string DeleteNonNumericCharacterWithMinus(string input) {
+            string output = "";
+            if (!int.TryParse(input, out int bonus)) {
+                if (Regex.IsMatch(input, @"^-.*$")) {
+                    output = "-" + Regex.Replace(input.Substring(1), @"[^\d]*", "");
+                } else {
+                    output = Regex.Replace(input, @"[^\d]*", "");
+                }
+            } else {
+                output = bonus.ToString();
+            }
+            return output;
+        }
+        public static string DeleteNonNumericCharacter(string input) {
+            string output = "";
+            if (!int.TryParse(input, out int bonus)) {
+                output = Regex.Replace(input, @"[^\d]*", "");
+            } else {
+                output = bonus.ToString();
+            }
+            return output;
+        }
+        public static string MinusSymbolToZero(string input) {
+            if (input == "-") {
+                return "0";
+            } else {
+                return input;
+            }
+        }
     }
     public class DBOperations {
         public static async Task CreateDB() {

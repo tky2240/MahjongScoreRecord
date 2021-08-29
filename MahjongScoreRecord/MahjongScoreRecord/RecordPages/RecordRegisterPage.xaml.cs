@@ -20,25 +20,21 @@ namespace MahjongScoreRecord {
         }
 
         private async void RegisterButton_Clicked(object sender, EventArgs e) {
-            if (RecordNameEntry.Text != null) {
-                if (!Regex.IsMatch(RecordNameEntry.Text.Trim(), @"^\s*$")) {
-                    if (!_PlayerPickers.Any(picker => picker.SelectedItem == null)) {
-                        SQLiteConnection db = await DBOperations.ConnectDB();
-                        db.Insert(new FourPlayersRecord {
-                            PlayerID1 = ((Player)PlayerPicker1.SelectedItem).PlayerID,
-                            PlayerID2 = ((Player)PlayerPicker2.SelectedItem).PlayerID,
-                            PlayerID3 = ((Player)PlayerPicker3.SelectedItem).PlayerID,
-                            PlayerID4 = ((Player)PlayerPicker4.SelectedItem).PlayerID,
-                            RecordName = RecordNameEntry.Text.Trim(),
-                            RecordTime = DateTime.Now
-                        });
-                        await Navigation.PopModalAsync(true);
-                        return;
-                    } else {
-                        await DisplayAlert("エラー", "プレイヤー名が空欄です", "OK");
-                    }
+            if (string.IsNullOrWhiteSpace(RecordNameEntry.Text)) {
+                if (!_PlayerPickers.Any(picker => picker.SelectedItem == null)) {
+                    SQLiteConnection db = await DBOperations.ConnectDB();
+                    db.Insert(new FourPlayersRecord {
+                        PlayerID1 = ((Player)PlayerPicker1.SelectedItem).PlayerID,
+                        PlayerID2 = ((Player)PlayerPicker2.SelectedItem).PlayerID,
+                        PlayerID3 = ((Player)PlayerPicker3.SelectedItem).PlayerID,
+                        PlayerID4 = ((Player)PlayerPicker4.SelectedItem).PlayerID,
+                        RecordName = RecordNameEntry.Text.Trim(),
+                        RecordTime = DateTime.Now
+                    });
+                    await Navigation.PopModalAsync(true);
+                    return;
                 } else {
-                    await DisplayAlert("エラー", "対局名が空欄です", "OK");
+                    await DisplayAlert("エラー", "プレイヤー名が未選択です", "OK");
                 }
             } else {
                 await DisplayAlert("エラー", "対局名が空欄です", "OK");

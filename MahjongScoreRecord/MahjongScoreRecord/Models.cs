@@ -57,6 +57,7 @@ namespace MahjongScoreRecord.Models {
         public int PlayerWind3 { get; set; }
         public int MatchCount { get; set; }
     }
+    [Table("FourPlayersBonus")]
     public class FourPlayersBonus {
         [PrimaryKey, AutoIncrement]
         public int BonusID { get; set; }
@@ -67,6 +68,7 @@ namespace MahjongScoreRecord.Models {
         public int Bonus3 { get; set; }
         public int Bonus4 { get; set; }
     }
+    [Table("ThreePlayersBonus")]
     public class ThreePlayersBonus {
         [PrimaryKey, AutoIncrement]
         public int BonusID { get; set; }

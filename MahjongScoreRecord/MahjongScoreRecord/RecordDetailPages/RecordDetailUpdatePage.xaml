@@ -33,7 +33,7 @@
                                    Placeholder="Point1" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
                             <Picker x:Name="WindPicker1" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
-                            <Label x:Name="AdjustmentScore1Label" Grid.Row="0" Grid.Column="2" 
+                            <Label x:Name="AdjustmentScoreLabel1" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
                         <Label x:Name="PlayerNameLabel2" Text="{Binding .}" FontSize="Medium"/>
@@ -50,7 +50,7 @@
                                    Placeholder="Point2" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
                             <Picker x:Name="WindPicker2" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
-                            <Label x:Name="AdjustmentScore2Label" Grid.Row="0" Grid.Column="2" 
+                            <Label x:Name="AdjustmentScoreLabel2" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
                         <Label x:Name="PlayerNameLabel3" Text="{Binding .}" FontSize="Medium"/>
@@ -67,7 +67,7 @@
                                    Placeholder="Point3" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
                             <Picker x:Name="WindPicker3" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
-                            <Label x:Name="AdjustmentScore3Label" Grid.Row="0" Grid.Column="2" 
+                            <Label x:Name="AdjustmentScoreLabel3" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
                         <Label x:Name="PlayerNameLabel4" Text="{Binding .}" FontSize="Medium"/>
@@ -84,7 +84,7 @@
                                    Placeholder="Point4" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
                             <Picker x:Name="WindPicker4" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
-                            <Label x:Name="AdjustmentScore4Label" Grid.Row="0" Grid.Column="2" 
+                            <Label x:Name="AdjustmentScoreLabel4" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
                         <Button x:Name="UpdateButton" Text="更新" Clicked="UpdateButton_Clicked"/>

@@ -22,9 +22,8 @@ namespace MahjongScoreRecord {
                 List<FourPlayersRecordDetail> fourPlayersRecordDetails = db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).ToList();
                 List<Player> players = db.Table<Player>().ToList();
                 FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
-                int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
+                int bonusID = Globals.GetCurrentFourPlayersBonusID();
                 FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
-                db.Dispose();
                 RecordNameLabel.BindingContext = fourPlayersRecord.RecordName;
                 RecordTimeLabel.BindingContext = fourPlayersRecord.RecordTime.ToString();
                 PlayerNames playerNames = new PlayerNames(players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName,
@@ -52,24 +51,27 @@ namespace MahjongScoreRecord {
 
         private async void RecordDetailListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             ListView recordDetailListView = (ListView)sender;
-            if (recordDetailListView.SelectedItem != null) {
-                await Navigation.PushModalAsync(new NavigationPage(new RecordDetailUpdatePage(((RecordDetailListItem)recordDetailListView.SelectedItem).RecordDetailID)), true);
+            RecordDetailListItem selectedDetail = (RecordDetailListItem)recordDetailListView.SelectedItem;
+            if (selectedDetail == null) {
+                return;
             }
+            await Navigation.PushModalAsync(new NavigationPage(new RecordDetailUpdatePage(selectedDetail.RecordDetailID)), true);
         }
 
         private async void EditButton_Clicked(object sender, EventArgs e) {
-            SQLiteConnection db = await DBOperations.ConnectDB();
-            List<Player> players = db.Table<Player>().ToList();
-            FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
-            db.Dispose();
-            await Navigation.PushModalAsync(new NavigationPage(new RecordUpdatePage(players, fourPlayersRecord)), true);
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
+                List<Player> players = db.Table<Player>().ToList();
+                FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
+                await Navigation.PushModalAsync(new NavigationPage(new RecordUpdatePage(players, fourPlayersRecord)), true);
+            }
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e) {
             if (await DisplayAlert("削除確認", $"対局名「{RecordNameLabel.Text}」\n記録日「{RecordTimeLabel.Text}」\n削除してもよろしいですか？", "Yes", "No")) {
-                SQLiteConnection db = await DBOperations.ConnectDB();
-                db.Table<FourPlayersRecordDetail>().Delete(detail => detail.RecordID == _RecordID);
-                db.Table<FourPlayersRecord>().Delete(record => record.RecordID == _RecordID);
+                using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                    db.Table<FourPlayersRecordDetail>().Delete(detail => detail.RecordID == _RecordID);
+                    db.Table<FourPlayersRecord>().Delete(record => record.RecordID == _RecordID);
+                }
                 await DisplayAlert("削除完了", "削除が完了しました", "OK");
                 await Navigation.PopModalAsync(true);
             }

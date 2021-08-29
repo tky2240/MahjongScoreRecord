@@ -17,9 +17,12 @@ namespace MahjongScoreRecord {
             }
         }
         private async void PlayerListView_ItemTapped(object sender, ItemTappedEventArgs e) {
-            ListView listView = (ListView)sender;
-            Player selectedPlayer = (Player)listView.SelectedItem;
-            listView.SelectedItem = null;
+            ListView playerListView = (ListView)sender;
+            Player selectedPlayer = (Player)playerListView.SelectedItem;
+            if(selectedPlayer == null) {
+                return;
+            }
+            playerListView.SelectedItem = null;
             await Navigation.PushModalAsync(new NavigationPage(new PlayerDetailPage(selectedPlayer.PlayerID)), true);
         }
 
@@ -33,7 +36,9 @@ namespace MahjongScoreRecord {
                 return;
             }
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
-                db.Insert(new Player { PlayerName = playerName.Trim() });
+                if(db.Insert(new Player { PlayerName = playerName.Trim() }) != 1) {
+                    await DisplayAlert("エラー", "雀士の追加に失敗しました\nもう一度試してみてください", "OK");
+                }
                 PlayerListView.ItemsSource = db.Table<Player>().ToList();
             }
         }

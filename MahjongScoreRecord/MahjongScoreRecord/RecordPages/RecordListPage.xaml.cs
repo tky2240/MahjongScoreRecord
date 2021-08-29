@@ -12,17 +12,6 @@ namespace MahjongScoreRecord {
         public RecordListPage() {
             InitializeComponent();
         }
-
-        private async void RecordListView_ItemTapped(object sender, ItemTappedEventArgs e) {
-            ListView listView = (ListView)sender;
-            if (listView.SelectedItem == null) {
-                return;
-            }
-            RecordListItem selectedItem = (RecordListItem)listView.SelectedItem;
-            listView.SelectedItem = null;
-            await Navigation.PushModalAsync(new NavigationPage(new RecordDetailListPage(selectedItem.RecordID)));
-        }
-
         private async void RecordListPage_Appearing(object sender, EventArgs e) {
             List<RecordListItem> recordListItems = new List<RecordListItem>();
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
@@ -32,7 +21,15 @@ namespace MahjongScoreRecord {
             }
             RecordListView.ItemsSource = recordListItems;
         }
-
+        private async void RecordListView_ItemTapped(object sender, ItemTappedEventArgs e) {
+            ListView recordListView = (ListView)sender;
+            RecordListItem selectedRecord = (RecordListItem)recordListView.SelectedItem;
+            if (selectedRecord == null) {
+                return;
+            }
+            recordListView.SelectedItem = null;
+            await Navigation.PushModalAsync(new NavigationPage(new RecordDetailListPage(selectedRecord.RecordID)));
+        }
         private async void RegisterRecordButton_Clicked(object sender, EventArgs e) {
             List<Player> players = new List<Player>();
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
