@@ -21,7 +21,7 @@ namespace MahjongScoreRecord {
             _WindPickers = new List<Picker>() { WindPicker1, WindPicker2, WindPicker3, WindPicker4 };
         }
         private async void RecordDetailUpdatePage_Appearing(object sender, EventArgs e) {
-            using(SQLiteConnection db = await DBOperations.ConnectDB()){
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 FourPlayersRecordDetail fourPlayersRecordDetail = db.Table<FourPlayersRecordDetail>().First(detail => detail.RecordDetailID == _RecordDetailID);
                 FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == fourPlayersRecordDetail.RecordID);
                 int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
@@ -72,7 +72,7 @@ namespace MahjongScoreRecord {
 
                 if (_PlayerPointEntries.All(entry => !string.IsNullOrEmpty(entry.Text))) {
                     if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() == _WindPickers.Count()) {
-                        using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                        using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                             int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
                             FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
                             PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
@@ -103,7 +103,7 @@ namespace MahjongScoreRecord {
         private async void WindPicker_SelectedIndexChanged(object sender, EventArgs e) {
             if (_PlayerPointEntries.All(entry => !string.IsNullOrEmpty(entry.Text))) {
                 if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() == _WindPickers.Count()) {
-                    using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                    using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                         int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
                         FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
                         PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
@@ -175,7 +175,7 @@ namespace MahjongScoreRecord {
                             PlayerWind4 = detail.PlayerWind4,
                             MatchCount = detail.MatchCount - 1
                         }).ToList()
-                    ); 
+                    );
                 }
                 await Navigation.PopModalAsync(true);
             }

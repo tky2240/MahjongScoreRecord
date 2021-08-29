@@ -19,14 +19,13 @@ namespace MahjongScoreRecord {
                 return;
             }
             RecordListItem selectedItem = (RecordListItem)listView.SelectedItem;
-            await DisplayAlert("選択", selectedItem.RecordName, "OK");
             listView.SelectedItem = null;
             await Navigation.PushModalAsync(new NavigationPage(new RecordDetailListPage(selectedItem.RecordID)));
         }
 
         private async void RecordListPage_Appearing(object sender, EventArgs e) {
             List<RecordListItem> recordListItems = new List<RecordListItem>();
-            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 List<FourPlayersRecord> fourPlayersRecords = db.Table<FourPlayersRecord>().ToList();
                 List<Player> players = db.Table<Player>().ToList();
                 fourPlayersRecords.ForEach(record => recordListItems.Add(new RecordListItem(record, players)));
@@ -36,7 +35,7 @@ namespace MahjongScoreRecord {
 
         private async void RegisterRecordButton_Clicked(object sender, EventArgs e) {
             List<Player> players = new List<Player>();
-            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 players = db.Table<Player>().ToList();
             }
             await Navigation.PushModalAsync(new NavigationPage(new RecordRegisterPage(players)), true);

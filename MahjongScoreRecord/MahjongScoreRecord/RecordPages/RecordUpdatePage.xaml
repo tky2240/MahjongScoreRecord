@@ -10,13 +10,13 @@
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
                 <Label Text="対局登録" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
             </Frame>
-            <Frame HasShadow="True" BorderColor="Gray"
+            <Frame HasShadow="True" BorderColor="Gray" Padding="5"
             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
                 <ScrollView>
-                    <StackLayout>
+                    <StackLayout Padding="5">
                         <Label Text="対局名称" FontSize="Body"/>
                         <Entry x:Name="RecordNameEntry" Placeholder="hoge" FontSize="Body" Keyboard="Chat"/>
                         <Label Text="プレイヤー1" FontSize="Body"/>

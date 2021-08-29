@@ -1,31 +1,23 @@
-﻿using System;
+﻿using MahjongScoreRecord.Models;
+using SQLite;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SQLite;
-using MahjongScoreRecord.Models;
 
-namespace MahjongScoreRecord
-{
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class BonusSettingPage : ContentPage
-	{
-		public BonusSettingPage()
-		{
-			InitializeComponent ();
-		}
+namespace MahjongScoreRecord {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class BonusSettingListPage : ContentPage {
+        public BonusSettingListPage() {
+            InitializeComponent();
+        }
 
         private async void BonusSettingPage_Appearing(object sender, EventArgs e) {
-            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 List<BonusListViewItem> bonusListViewItems = new List<BonusListViewItem>();
                 int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
-                db.Table<FourPlayersBonus>().ToList().ForEach(bonus => { 
-                    if (bonus.BonusID == bonusID) { bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow)); }
-                    else { bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White)); }
+                db.Table<FourPlayersBonus>().ToList().ForEach(bonus => {
+                    if (bonus.BonusID == bonusID) { bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow)); } else { bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White)); }
                 });
                 BonusListView.ItemsSource = bonusListViewItems;
             }

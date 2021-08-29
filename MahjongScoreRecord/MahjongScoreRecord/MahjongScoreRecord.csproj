@@ -23,34 +23,34 @@
     <Compile Update="LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="BonusSettingPage.xaml.cs">
-      <DependentUpon>BonusSettingPage.xaml</DependentUpon>
+    <Compile Update="BonusPages\BonusSettingListPage.xaml.cs">
+      <DependentUpon>BonusSettingListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="BonusSettingRegisterPage.xaml.cs">
+    <Compile Update="BonusPages\BonusSettingRegisterPage.xaml.cs">
       <DependentUpon>BonusSettingRegisterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="PlayerDetailPage.xaml.cs">
+    <Compile Update="PlayerPages\PlayerDetailPage.xaml.cs">
       <DependentUpon>PlayerDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="RecordDetailUpdatePage.xaml.cs">
+    <Compile Update="RecordDetailPages\RecordDetailUpdatePage.xaml.cs">
       <DependentUpon>RecordDetailUpdatePage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="RecordDetailRegisterPage.xaml.cs">
+    <Compile Update="RecordDetailPages\RecordDetailRegisterPage.xaml.cs">
       <DependentUpon>RecordDetailRegisterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="RecordUpdatePage.xaml.cs">
+    <Compile Update="RecordPages\RecordUpdatePage.xaml.cs">
       <DependentUpon>RecordUpdatePage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="RecordRegisterPage.xaml.cs">
+    <Compile Update="RecordPages\RecordRegisterPage.xaml.cs">
       <DependentUpon>RecordRegisterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="PlayerListPage.xaml.cs">
+    <Compile Update="PlayerPages\PlayerListPage.xaml.cs">
       <DependentUpon>PlayerListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="RecordDetailListPage.xaml.cs">
+    <Compile Update="RecordDetailPages\RecordDetailListPage.xaml.cs">
       <DependentUpon>RecordDetailListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="RecordListPage.xaml.cs">
+    <Compile Update="RecordPages\RecordListPage.xaml.cs">
       <DependentUpon>RecordListPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -59,28 +59,28 @@
     <EmbeddedResource Update="LoadingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="BonusSettingPage.xaml">
+    <EmbeddedResource Update="BonusPages\BonusSettingListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="BonusSettingRegisterPage.xaml">
+    <EmbeddedResource Update="BonusPages\BonusSettingRegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="PlayerDetailPage.xaml">
+    <EmbeddedResource Update="PlayerPages\PlayerDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="RecordDetailRegisterPage.xaml">
+    <EmbeddedResource Update="RecordDetailPages\RecordDetailRegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="RecordRegisterPage.xaml">
+    <EmbeddedResource Update="RecordPages\RecordRegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="PlayerListPage.xaml">
+    <EmbeddedResource Update="PlayerPages\PlayerListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="RecordDetailListPage.xaml">
+    <EmbeddedResource Update="RecordDetailPages\RecordDetailListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="RecordListPage.xaml">
+    <EmbeddedResource Update="RecordPages\RecordListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

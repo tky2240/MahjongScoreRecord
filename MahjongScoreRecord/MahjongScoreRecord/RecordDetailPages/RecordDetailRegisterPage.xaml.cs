@@ -58,7 +58,7 @@ namespace MahjongScoreRecord {
 
                 if (_PlayerPointEntries.All(entry => !string.IsNullOrEmpty(entry.Text))) {
                     if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() == 4) {
-                        using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                        using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                             int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
                             FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
                             PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
@@ -89,7 +89,7 @@ namespace MahjongScoreRecord {
         private async void WindPicker_SelectedIndexChanged(object sender, EventArgs e) {
             if (_PlayerPointEntries.All(entry => !string.IsNullOrEmpty(entry.Text))) {
                 if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() == 4) {
-                    using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                    using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                         int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
                         FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
                         PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),

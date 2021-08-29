@@ -37,7 +37,7 @@ namespace MahjongScoreRecord {
             } else {
                 dbFile = await Globals.rootFolder.CreateFileAsync(Globals.dbFileName, CreationCollisionOption.ReplaceExisting);
             }
-            using(SQLiteConnection db = new SQLiteConnection(dbFile.Path)) {
+            using (SQLiteConnection db = new SQLiteConnection(dbFile.Path)) {
                 db.CreateTables(types: new Type[] { typeof(Player), typeof(FourPlayersRecord), typeof(FourPlayersRecordDetail), typeof(ThreePlayersRecord), typeof(ThreePlayersRecordDetail), typeof(FourPlayersBonus), typeof(ThreePlayersBonus) });
             }
             return;
@@ -113,7 +113,7 @@ namespace MahjongScoreRecord {
             AdjustmentPoint2 = sortedPointAndPlayers.First(pointAndPlayer => pointAndPlayer.player == 2).point;
             AdjustmentPoint3 = sortedPointAndPlayers.First(pointAndPlayer => pointAndPlayer.player == 3).point;
             AdjustmentPoint4 = sortedPointAndPlayers.First(pointAndPlayer => pointAndPlayer.player == 4).point;
-            AdjustmentScore1 = Math.Round((AdjustmentPoint1 - _ReferencePoint) / 1000.0, 1 ,MidpointRounding.AwayFromZero);
+            AdjustmentScore1 = Math.Round((AdjustmentPoint1 - _ReferencePoint) / 1000.0, 1, MidpointRounding.AwayFromZero);
             AdjustmentScore2 = Math.Round((AdjustmentPoint2 - _ReferencePoint) / 1000.0, 1, MidpointRounding.AwayFromZero);
             AdjustmentScore3 = Math.Round((AdjustmentPoint3 - _ReferencePoint) / 1000.0, 1, MidpointRounding.AwayFromZero);
             AdjustmentScore4 = Math.Round((AdjustmentPoint4 - _ReferencePoint) / 1000.0, 1, MidpointRounding.AwayFromZero);

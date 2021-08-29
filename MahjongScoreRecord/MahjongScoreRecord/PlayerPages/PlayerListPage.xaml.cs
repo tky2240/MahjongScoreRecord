@@ -12,7 +12,7 @@ namespace MahjongScoreRecord {
             InitializeComponent();
         }
         private async void PlayerListPage_Appearing(object sender, EventArgs e) {
-            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 PlayerListView.ItemsSource = db.Table<Player>().ToList();
             }
         }
@@ -32,7 +32,7 @@ namespace MahjongScoreRecord {
                 await DisplayAlert("エラー", "正しい名前を入力してください", "OK");
                 return;
             }
-            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 db.Insert(new Player { PlayerName = playerName.Trim() });
                 PlayerListView.ItemsSource = db.Table<Player>().ToList();
             }

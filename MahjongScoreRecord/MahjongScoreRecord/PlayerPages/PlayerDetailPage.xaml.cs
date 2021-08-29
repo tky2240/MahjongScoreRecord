@@ -1,15 +1,12 @@
-﻿using System;
+﻿using MahjongScoreRecord.Models;
+using Microcharts;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SQLite;
-using Microcharts;
-using MahjongScoreRecord.Models;
 
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -33,10 +30,10 @@ namespace MahjongScoreRecord {
                 FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
                 List<ChartEntry> chartEntries = new List<ChartEntry>();
                 double totalSocre = 0;
-                foreach(FourPlayersRecord fourPlayersRecord in fourPlayersRecords) {
-                    ReadOnlyCollection<int> playerIDs = new ReadOnlyCollection<int>(new List<int>() {fourPlayersRecord.PlayerID1, fourPlayersRecord.PlayerID2, fourPlayersRecord.PlayerID3, fourPlayersRecord.PlayerID4 });
+                foreach (FourPlayersRecord fourPlayersRecord in fourPlayersRecords) {
+                    ReadOnlyCollection<int> playerIDs = new ReadOnlyCollection<int>(new List<int>() { fourPlayersRecord.PlayerID1, fourPlayersRecord.PlayerID2, fourPlayersRecord.PlayerID3, fourPlayersRecord.PlayerID4 });
                     int playerIndex = playerIDs.IndexOf(_PlayerID);
-                    foreach(FourPlayersRecordDetail fourPlayersRecordDetail in fourPlayersRecordDetails) {
+                    foreach (FourPlayersRecordDetail fourPlayersRecordDetail in fourPlayersRecordDetails) {
                         PlayerPoints playerPoints = new PlayerPoints(fourPlayersRecordDetail.PlayerPoint1, fourPlayersRecordDetail.PlayerPoint2, fourPlayersRecordDetail.PlayerPoint3, fourPlayersRecordDetail.PlayerPoint4);
                         PlayerWinds playerWinds = new PlayerWinds((Winds)fourPlayersRecordDetail.PlayerWind1, (Winds)fourPlayersRecordDetail.PlayerWind2, (Winds)fourPlayersRecordDetail.PlayerWind3, (Winds)fourPlayersRecordDetail.PlayerWind4);
                         AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds, fourPlayersBonus);
@@ -44,9 +41,9 @@ namespace MahjongScoreRecord {
                         totalSocre += adjustmentScores[playerIndex];
                         chartEntries.Add(new ChartEntry(
                                 (float)totalSocre) {
-                                Label = $"{fourPlayersRecord.RecordName}:{fourPlayersRecord.RecordTime}\n{fourPlayersRecordDetail.MatchCount}局目",
-                                ValueLabel = $"{totalSocre}"
-                            }
+                            Label = $"{fourPlayersRecord.RecordName}:{fourPlayersRecord.RecordTime}\n{fourPlayersRecordDetail.MatchCount}局目",
+                            ValueLabel = $"{totalSocre}"
+                        }
                         );
                     }
                 }

@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-
+﻿using MahjongScoreRecord.Models;
+using SQLite;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using SQLite;
-using MahjongScoreRecord.Models;
 
 namespace MahjongScoreRecord {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -17,7 +16,7 @@ namespace MahjongScoreRecord {
         }
         private async void LoadingPage_Appearing(object sender, System.EventArgs e) {
             await _LoadTask;
-            using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 if (db.Table<FourPlayersBonus>().Count() == 0) {
                     db.Insert(new FourPlayersBonus() {
                         OriginPoint = 25000,
