@@ -22,7 +22,7 @@
                         <ViewCell>
                             <Frame CornerRadius="10" BackgroundColor="{Binding BackGroundColor}" BorderColor="Gray" Margin="5" Padding="5">
                                 <StackLayout>
-                                    <Label Text="{Binding PrizeSettingText}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                    <Label x:Name="PrizeSettingLabel" Text="{Binding PrizeSettingText}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -31,7 +31,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <Label Grid.Row="0" Grid.Column="0" Text="{Binding BonusText1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         <Label Grid.Row="0" Grid.Column="1" Text="{Binding BonusText2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>

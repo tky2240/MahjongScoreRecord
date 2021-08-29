@@ -19,7 +19,7 @@
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
                 <ScrollView>
                     <StackLayout Padding="5">
-                        <Label x:Name="PlayerName1Label" Text="{Binding .}" FontSize="Medium"/>
+                        <Label x:Name="PlayerNameLabel1" Text="{Binding .}" FontSize="Medium"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>
@@ -29,14 +29,14 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Entry x:Name="PlayerPoint1Entry" Grid.Row="0" Grid.Column="0"
+                            <Entry x:Name="PlayerPointEntry1" Grid.Row="0" Grid.Column="0"
                                    Placeholder="Point1" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
                             <Picker x:Name="WindPicker1" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
                             <Label x:Name="AdjustmentScore1Label" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
-                        <Label x:Name="PlayerName2Label" Text="{Binding .}" FontSize="Medium"/>
+                        <Label x:Name="PlayerNameLabel2" Text="{Binding .}" FontSize="Medium"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>
@@ -46,14 +46,14 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Entry x:Name="PlayerPoint2Entry" Grid.Row="0" Grid.Column="0"
+                            <Entry x:Name="PlayerPointEntry2" Grid.Row="0" Grid.Column="0"
                                    Placeholder="Point2" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
                             <Picker x:Name="WindPicker2" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
                             <Label x:Name="AdjustmentScore2Label" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
-                        <Label x:Name="PlayerName3Label" Text="{Binding .}" FontSize="Medium"/>
+                        <Label x:Name="PlayerNameLabel3" Text="{Binding .}" FontSize="Medium"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>
@@ -63,14 +63,14 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Entry x:Name="PlayerPoint3Entry" Grid.Row="0" Grid.Column="0"
+                            <Entry x:Name="PlayerPointEntry3" Grid.Row="0" Grid.Column="0"
                                    Placeholder="Point3" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
                             <Picker x:Name="WindPicker3" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
                             <Label x:Name="AdjustmentScore3Label" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
-                        <Label x:Name="PlayerName4Label" Text="{Binding .}" FontSize="Medium"/>
+                        <Label x:Name="PlayerNameLabel4" Text="{Binding .}" FontSize="Medium"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4*"/>
@@ -80,7 +80,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Entry x:Name="PlayerPoint4Entry" Grid.Row="0" Grid.Column="0"
+                            <Entry x:Name="PlayerPointEntry4" Grid.Row="0" Grid.Column="0"
                                    Placeholder="Point4" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
                             <Picker x:Name="WindPicker4" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>

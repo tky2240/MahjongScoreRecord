@@ -11,6 +11,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Bonus.png" />
+    <None Remove="Images\Delete.png" />
+    <None Remove="Images\Edit.png" />
+    <None Remove="Images\Player.png" />
+    <None Remove="Images\Record.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\Bonus.png" />
+    <EmbeddedResource Include="Images\Delete.png" />
+    <EmbeddedResource Include="Images\Edit.png" />
+    <EmbeddedResource Include="Images\Player.png" />
+    <EmbeddedResource Include="Images\Record.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microcharts.Forms" Version="1.0.0-preview1" />
     <PackageReference Include="PCLStorage" Version="1.0.2" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.88.0-preview.127" />
@@ -20,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="BonusPages\BonusSettingUpdatePage.xaml.cs">
+      <DependentUpon>BonusSettingUpdatePage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>

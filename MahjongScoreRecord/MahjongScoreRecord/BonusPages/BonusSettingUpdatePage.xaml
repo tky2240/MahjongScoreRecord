@@ -1,0 +1,50 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MahjongScoreRecord.BonusSettingUpdatePage"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             Title="レート登録" NavigationPage.HasNavigationBar="False" Padding="0"
+             Appearing="BonusSettingUpdatePage_Appearing">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
+               RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
+                <Label Text="レート設定更新" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+            </Frame>
+            <Frame HasShadow="True" BorderColor="Gray" Padding="5"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
+               RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
+               RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
+                <ScrollView>
+                    <StackLayout Padding="5">
+                        <Label Text="原点" FontSize="Medium"/>
+                        <Entry x:Name="OriginPointEntry" Placeholder="OriginPoint" FontSize="Body" Keyboard="Telephone" MaxLength="8"
+                               TextChanged="PointEntry_TextChanged"/>
+                        <Label Text="返し" FontSize="Medium"/>
+                        <Entry x:Name="ReferencePointEntry" Placeholder="OriginPoint" FontSize="Body" Keyboard="Telephone" MaxLength="8"
+                               TextChanged="PointEntry_TextChanged"/>
+                        <Label Text="1家ウマ" FontSize="Medium"/>
+                        <Entry x:Name="BonusEntry1" Placeholder="Bonus1" FontSize="Body" Keyboard="Telephone" MaxLength="4"
+                                   TextChanged="BonusEntry_TextChanged" Unfocused="BonusEntry_Unfocused"/>
+                        <Label Text="2家ウマ" FontSize="Medium"/>
+                        <Entry x:Name="BonusEntry2" Placeholder="Bonus2" FontSize="Body" Keyboard="Telephone" MaxLength="4"
+                                   TextChanged="BonusEntry_TextChanged" Unfocused="BonusEntry_Unfocused"/>
+                        <Label Text="3家ウマ" FontSize="Medium"/>
+                        <Entry x:Name="BonusEntry3" Placeholder="Bonus3" FontSize="Body" Keyboard="Telephone" MaxLength="4"
+                                   TextChanged="BonusEntry_TextChanged" Unfocused="BonusEntry_Unfocused"/>
+                        <Label Text="4家ウマ" FontSize="Medium"/>
+                        <Entry x:Name="BonusEntry4" Placeholder="Bonus4" FontSize="Body" Keyboard="Telephone" MaxLength="4"
+                                   TextChanged="BonusEntry_TextChanged" Unfocused="BonusEntry_Unfocused"/>
+                        <Button x:Name="UpdateButton" Text="更新" Clicked="UpdateButton_Clicked"/>
+                        <Button x:Name="DeleteButton" Text="削除" Clicked="DeleteButton_Clicked"/>
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+            <Button x:Name="BackButton" Text="戻る" CornerRadius="5" Clicked="BackButton_Clicked"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.2}"
+                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.0, Constant=20}"
+                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.9}"/>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

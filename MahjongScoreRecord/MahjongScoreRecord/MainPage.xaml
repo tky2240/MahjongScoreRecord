@@ -6,12 +6,9 @@
             xmlns:local="clr-namespace:MahjongScoreRecord"
             android:TabbedPage.ToolbarPlacement="Bottom"
             NavigationPage.HasNavigationBar="False">
-    <TabbedPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0,40,0,0" Android="0,40,0,0" />
-    </TabbedPage.Padding>
-
-    <local:RecordListPage/>
-    <local:PlayerListPage/>
-    <local:BonusSettingListPage/>
-
+    <TabbedPage.Children>
+        <local:RecordListPage x:Name="RecordListPage" IconImageSource="{Binding .}"/>
+        <local:PlayerListPage x:Name="PlayerListPage" IconImageSource="{Binding .}"/>
+        <local:BonusSettingListPage x:Name="BonusSettingListPage" IconImageSource="{Binding .}"/>
+    </TabbedPage.Children>
 </TabbedPage>

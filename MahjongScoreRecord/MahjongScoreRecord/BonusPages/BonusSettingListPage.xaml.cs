@@ -17,7 +17,10 @@ namespace MahjongScoreRecord {
                 List<BonusListViewItem> bonusListViewItems = new List<BonusListViewItem>();
                 int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
                 db.Table<FourPlayersBonus>().ToList().ForEach(bonus => {
-                    if (bonus.BonusID == bonusID) { bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow)); } else { bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White)); }
+                    if (bonus.BonusID == bonusID) {
+                        bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow));
+                    } else {
+                        bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White)); }
                 });
                 BonusListView.ItemsSource = bonusListViewItems;
             }
@@ -25,16 +28,26 @@ namespace MahjongScoreRecord {
 
         private async void BonusListView_ItemTapped(object sender, ItemTappedEventArgs e) {
             BonusListViewItem selectedItem = (BonusListViewItem)((ListView)sender).SelectedItem;
-            Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()] = selectedItem.BonusID;
-            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
-                List<BonusListViewItem> bonusListViewItems = new List<BonusListViewItem>();
-                int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
-                db.Table<FourPlayersBonus>().ToList().ForEach(bonus => {
-                    if (bonus.BonusID == bonusID) { bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow)); } else { bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White)); }
-                });
-                BonusListView.ItemsSource = bonusListViewItems;
+            string selectedActionString =  await DisplayActionSheet("操作を選んでください", BonusSettingActions.Cancel.ToString(), null, BonusSettingActions.Edit.ToString(), BonusSettingActions.Set.ToString());
+            if(selectedActionString == BonusSettingActions.Edit.ToString()) {
+                await Navigation.PushModalAsync(new NavigationPage(new BonusSettingUpdatePage(selectedItem.BonusID)));
+            }else if(selectedActionString == BonusSettingActions.Set.ToString()){
+                Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()] = selectedItem.BonusID;
+                using (SQLiteConnection db = await DBOperations.ConnectDB()) {
+                    List<BonusListViewItem> bonusListViewItems = new List<BonusListViewItem>();
+                    int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
+                    db.Table<FourPlayersBonus>().ToList().ForEach(bonus => {
+                        if (bonus.BonusID == bonusID) {
+                            bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow));
+                        } else {
+                            bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White));
+                        }
+                    });
+                    BonusListView.ItemsSource = bonusListViewItems;
+                }
+                await DisplayAlert("ウマ・オカ変更", $"{selectedItem.PrizeSettingText}\n1家:{selectedItem.Bonus1} 2家:{selectedItem.Bonus2} 3家:{selectedItem.Bonus3} 4家:{selectedItem.Bonus4}に変更しました", "OK");
             }
-            await DisplayAlert("ウマ・オカ変更", $"{selectedItem.PrizeSettingText}\n1家:{selectedItem.Bonus1} 2家:{selectedItem.Bonus2} 3家:{selectedItem.Bonus3} 4家:{selectedItem.Bonus4}に変更しました", "OK");
+            ((ListView)sender).SelectedItem = null;
         }
 
         private async void BonusRegisterButton_Clicked(object sender, EventArgs e) {
@@ -69,6 +82,10 @@ namespace MahjongScoreRecord {
             public string BonusText3 { get; }
             public string BonusText4 { get; }
             public Color BackGroundColor { get; }
+        }
+
+        private void EditButton_Clicked(object sender, EventArgs e) {
+
         }
     }
 }

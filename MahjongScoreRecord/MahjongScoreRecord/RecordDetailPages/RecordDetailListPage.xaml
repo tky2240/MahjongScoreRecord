@@ -17,25 +17,13 @@
                         <Label x:Name="RecordNameLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
                         <Label x:Name="RecordTimeLabel" Text="{Binding .}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
                     </StackLayout>
-                    <ImageButton x:Name="EditButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45" BackgroundColor="Transparent"
-                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.8}"
+                    <ImageButton x:Name="EditButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45" BackgroundColor="Transparent" Margin="5"
+                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.82}" Source="{Binding .}"
                                  Clicked="EditButton_Clicked">
-                        <ImageButton.Source>
-                            <OnPlatform x:TypeArguments="ImageSource">
-                                <On Platform="iOS, Android" Value="Edit.png"/>
-                                <On Platform="UWP" Value="Assets/Edit.png"/>
-                            </OnPlatform>
-                        </ImageButton.Source>
                     </ImageButton>
-                    <ImageButton x:Name="DeleteButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45" BackgroundColor="Transparent"
-                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.7}"
+                    <ImageButton x:Name="DeleteButton" HorizontalOptions="End" VerticalOptions="Center" Scale="0.45" BackgroundColor="Transparent" Margin="5" Source="{Binding .}"
+                                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.72}"
                                  Clicked="DeleteButton_Clicked">
-                        <ImageButton.Source>
-                            <OnPlatform x:TypeArguments="ImageSource">
-                                <On Platform="IOS, Android" Value="Delete.png"/>
-                                <On Platform="UWP" Value="Assets/Delete.png"/>
-                            </OnPlatform>
-                        </ImageButton.Source>
                     </ImageButton>
                 </RelativeLayout>
             </Frame>
@@ -50,7 +38,7 @@
                             <ViewCell>
                                 <Frame CornerRadius="10" BackgroundColor="White" BorderColor="Gray" Margin="5" Padding="5">
                                     <StackLayout>
-                                        <Label Text="{Binding MatchCount}"/>
+                                        <Label Text="{Binding MatchCountText}"/>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
@@ -63,18 +51,18 @@
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
-                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="0" Grid.Column="2" Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="0" Grid.Column="3" Text="{Binding PlayerName4}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding PlayerPoint1}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding PlayerPoint2}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="1" Grid.Column="2" Text="{Binding PlayerPoint3}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding PlayerPoint4}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding AdjustmentScore1}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding AdjustmentScore2}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="2" Grid.Column="2" Text="{Binding AdjustmentScore3}" FontSize="Medium" VerticalOptions="Center"/>
-                                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding AdjustmentScore4}" FontSize="Medium" VerticalOptions="Center"/>
+                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="0" Grid.Column="2" Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="0" Grid.Column="3" Text="{Binding PlayerName4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding PlayerPoint1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding PlayerPoint2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="1" Grid.Column="2" Text="{Binding PlayerPoint3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="1" Grid.Column="3" Text="{Binding PlayerPoint4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding AdjustmentScore1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding AdjustmentScore2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="2" Text="{Binding AdjustmentScore3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding AdjustmentScore4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Grid>
                                     </StackLayout>
                                 </Frame>

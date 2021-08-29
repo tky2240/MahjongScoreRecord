@@ -7,6 +7,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace MahjongScoreRecord {
+    public enum BonusSettingActions {
+        None = 0,
+        Cancel = 1,
+        Edit = 2,
+        Set = 3,
+    }
     public enum StoreIDs {
         FourPlayerBonus = 1,
         ThreePlayerBonus = 2,

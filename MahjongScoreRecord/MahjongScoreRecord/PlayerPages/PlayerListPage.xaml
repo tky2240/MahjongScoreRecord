@@ -20,16 +20,8 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame CornerRadius="10" BackgroundColor="White" BorderColor="Gray" Margin="5" Padding="5">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="4*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding PlayerName}" FontSize="Medium" VerticalOptions="Center"/>
-                                </Grid>
+                            <Frame CornerRadius="10" BackgroundColor="White" BorderColor="Gray" Margin="5" Padding="15">
+                                <Label Text="{Binding PlayerName}" FontSize="Medium" VerticalOptions="Center"/>
                             </Frame>
                         </ViewCell>
                     </DataTemplate>

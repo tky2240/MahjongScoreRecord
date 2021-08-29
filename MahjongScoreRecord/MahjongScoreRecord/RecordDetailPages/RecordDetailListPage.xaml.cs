@@ -13,6 +13,8 @@ namespace MahjongScoreRecord {
         public RecordDetailListPage(int recordID) {
             InitializeComponent();
             _RecordID = recordID;
+            EditButton.BindingContext = ImageSource.FromResource("MahjongScoreRecord.Images.Edit.png");
+            DeleteButton.BindingContext = ImageSource.FromResource("MahjongScoreRecord.Images.Delete.png");
         }
 
         private async void RecordDetailPage_Appearing(object sender, EventArgs e) {
@@ -92,6 +94,7 @@ namespace MahjongScoreRecord {
                 AdjustmentScore3 = adjustmentPoints.AdjustmentScore3;
                 AdjustmentScore4 = adjustmentPoints.AdjustmentScore4;
                 MatchCount = matchCount;
+                MatchCountText = $"{matchCount}対局目";
             }
             public int RecordDetailID { get; }
             public string PlayerName1 { get; }
@@ -111,6 +114,7 @@ namespace MahjongScoreRecord {
             public double AdjustmentScore3 { get; }
             public double AdjustmentScore4 { get; }
             public int MatchCount { get; }
+            public string MatchCountText { get; }
         }
     }
 }

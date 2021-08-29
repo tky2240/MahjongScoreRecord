@@ -17,7 +17,7 @@ namespace MahjongScoreRecord {
         public RecordDetailUpdatePage(int recordDetailID) {
             InitializeComponent();
             _RecordDetailID = recordDetailID;
-            _PlayerPointEntries = new List<Entry>() { PlayerPoint1Entry, PlayerPoint2Entry, PlayerPoint3Entry, PlayerPoint4Entry };
+            _PlayerPointEntries = new List<Entry>() { PlayerPointEntry1, PlayerPointEntry2, PlayerPointEntry3, PlayerPointEntry4 };
             _WindPickers = new List<Picker>() { WindPicker1, WindPicker2, WindPicker3, WindPicker4 };
         }
         private async void RecordDetailUpdatePage_Appearing(object sender, EventArgs e) {
@@ -27,19 +27,19 @@ namespace MahjongScoreRecord {
                 int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
                 FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
                 List<Player> players = db.Table<Player>().ToList();
-                PlayerName1Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName;
-                PlayerName2Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID2).PlayerName;
-                PlayerName3Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID3).PlayerName;
-                PlayerName4Label.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName;
+                PlayerNameLabel1.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName;
+                PlayerNameLabel2.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID2).PlayerName;
+                PlayerNameLabel3.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID3).PlayerName;
+                PlayerNameLabel4.BindingContext = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName;
                 _WindPickers.ForEach(picker => picker.ItemsSource = Globals.winds);
                 WindPicker1.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind1);
                 WindPicker2.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind2);
                 WindPicker3.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind3);
                 WindPicker4.SelectedItem = Globals.winds.First(wind => (int)wind.Key == fourPlayersRecordDetail.PlayerWind4);
-                PlayerPoint1Entry.Text = fourPlayersRecordDetail.PlayerPoint1.ToString();
-                PlayerPoint2Entry.Text = fourPlayersRecordDetail.PlayerPoint2.ToString();
-                PlayerPoint3Entry.Text = fourPlayersRecordDetail.PlayerPoint3.ToString();
-                PlayerPoint4Entry.Text = fourPlayersRecordDetail.PlayerPoint4.ToString();
+                PlayerPointEntry1.Text = fourPlayersRecordDetail.PlayerPoint1.ToString();
+                PlayerPointEntry2.Text = fourPlayersRecordDetail.PlayerPoint2.ToString();
+                PlayerPointEntry3.Text = fourPlayersRecordDetail.PlayerPoint3.ToString();
+                PlayerPointEntry4.Text = fourPlayersRecordDetail.PlayerPoint4.ToString();
                 PlayerPoints playerPoints = new PlayerPoints(fourPlayersRecordDetail.PlayerPoint1, fourPlayersRecordDetail.PlayerPoint2, fourPlayersRecordDetail.PlayerPoint3, fourPlayersRecordDetail.PlayerPoint4);
                 PlayerWinds playerWinds = new PlayerWinds((Winds)fourPlayersRecordDetail.PlayerWind1, (Winds)fourPlayersRecordDetail.PlayerWind2, (Winds)fourPlayersRecordDetail.PlayerWind3, (Winds)fourPlayersRecordDetail.PlayerWind4);
                 AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds, fourPlayersBonus);
@@ -75,10 +75,10 @@ namespace MahjongScoreRecord {
                         using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                             int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
                             FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
-                            PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
-                                                                     int.Parse(PlayerPoint2Entry.Text),
-                                                                     int.Parse(PlayerPoint3Entry.Text),
-                                                                     int.Parse(PlayerPoint4Entry.Text));
+                            PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPointEntry1.Text),
+                                                                         int.Parse(PlayerPointEntry2.Text),
+                                                                         int.Parse(PlayerPointEntry3.Text),
+                                                                         int.Parse(PlayerPointEntry4.Text));
                             PlayerWinds playerWinds = new PlayerWinds(((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
                                                                       ((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
                                                                       ((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
@@ -106,10 +106,10 @@ namespace MahjongScoreRecord {
                     using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                         int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
                         FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
-                        PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
-                                                                 int.Parse(PlayerPoint2Entry.Text),
-                                                                 int.Parse(PlayerPoint3Entry.Text),
-                                                                 int.Parse(PlayerPoint4Entry.Text));
+                        PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPointEntry1.Text),
+                                                                     int.Parse(PlayerPointEntry2.Text),
+                                                                     int.Parse(PlayerPointEntry3.Text),
+                                                                     int.Parse(PlayerPointEntry4.Text));
                         PlayerWinds playerWinds = new PlayerWinds(((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
                                                                   ((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
                                                                   ((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
@@ -139,14 +139,21 @@ namespace MahjongScoreRecord {
                 return;
             }
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
+                int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
+                FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
+                if (int.Parse(PlayerPointEntry1.Text) + int.Parse(PlayerPointEntry2.Text) + int.Parse(PlayerPointEntry3.Text) + int.Parse(PlayerPointEntry4.Text) != fourPlayersBonus.OriginPoint * 4) {
+                    if (!await DisplayAlert("得点確認", "点数の合計が原点と等しくありませんがこのまま登録しますか？", "Yes", "No")) {
+                        return;
+                    }
+                }
                 FourPlayersRecordDetail fourPlayersRecordDetail = db.Table<FourPlayersRecordDetail>().First(detail => detail.RecordDetailID == _RecordDetailID);
                 db.Update(new FourPlayersRecordDetail() {
                     RecordDetailID = _RecordDetailID,
                     RecordID = fourPlayersRecordDetail.RecordID,
-                    PlayerPoint1 = int.Parse(PlayerPoint1Entry.Text),
-                    PlayerPoint2 = int.Parse(PlayerPoint2Entry.Text),
-                    PlayerPoint3 = int.Parse(PlayerPoint3Entry.Text),
-                    PlayerPoint4 = int.Parse(PlayerPoint4Entry.Text),
+                    PlayerPoint1 = int.Parse(PlayerPointEntry1.Text),
+                    PlayerPoint2 = int.Parse(PlayerPointEntry2.Text),
+                    PlayerPoint3 = int.Parse(PlayerPointEntry3.Text),
+                    PlayerPoint4 = int.Parse(PlayerPointEntry4.Text),
                     PlayerWind1 = (int)((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
                     PlayerWind2 = (int)((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
                     PlayerWind3 = (int)((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
