@@ -23,6 +23,12 @@
     <Compile Update="LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="BonusSettingPage.xaml.cs">
+      <DependentUpon>BonusSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="BonusSettingRegisterPage.xaml.cs">
+      <DependentUpon>BonusSettingRegisterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="PlayerDetailPage.xaml.cs">
       <DependentUpon>PlayerDetailPage.xaml</DependentUpon>
     </Compile>
@@ -51,6 +57,12 @@
 
   <ItemGroup>
     <EmbeddedResource Update="LoadingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="BonusSettingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="BonusSettingRegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="PlayerDetailPage.xaml">

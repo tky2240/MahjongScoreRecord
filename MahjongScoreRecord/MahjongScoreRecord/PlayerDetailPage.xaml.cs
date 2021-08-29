@@ -29,6 +29,8 @@ namespace MahjongScoreRecord {
                                                                                                            detail.PlayerID4 == _PlayerID).ToList();
                 List<int> recordIDs = fourPlayersRecords.Select(record => record.RecordID).ToList();
                 List<FourPlayersRecordDetail> fourPlayersRecordDetails = db.Table<FourPlayersRecordDetail>().Where(detail => recordIDs.Contains(detail.RecordID)).ToList();
+                int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
+                FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
                 List<ChartEntry> chartEntries = new List<ChartEntry>();
                 double totalSocre = 0;
                 foreach(FourPlayersRecord fourPlayersRecord in fourPlayersRecords) {
@@ -37,7 +39,7 @@ namespace MahjongScoreRecord {
                     foreach(FourPlayersRecordDetail fourPlayersRecordDetail in fourPlayersRecordDetails) {
                         PlayerPoints playerPoints = new PlayerPoints(fourPlayersRecordDetail.PlayerPoint1, fourPlayersRecordDetail.PlayerPoint2, fourPlayersRecordDetail.PlayerPoint3, fourPlayersRecordDetail.PlayerPoint4);
                         PlayerWinds playerWinds = new PlayerWinds((Winds)fourPlayersRecordDetail.PlayerWind1, (Winds)fourPlayersRecordDetail.PlayerWind2, (Winds)fourPlayersRecordDetail.PlayerWind3, (Winds)fourPlayersRecordDetail.PlayerWind4);
-                        AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds);
+                        AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds, fourPlayersBonus);
                         List<double> adjustmentScores = new List<double>() { adjustmentPoints.AdjustmentScore1, adjustmentPoints.AdjustmentScore2, adjustmentPoints.AdjustmentScore2, adjustmentPoints.AdjustmentScore4 };
                         totalSocre += adjustmentScores[playerIndex];
                         chartEntries.Add(new ChartEntry(

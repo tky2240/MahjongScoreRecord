@@ -14,7 +14,6 @@ namespace MahjongScoreRecord {
         private readonly List<Entry> _PlayerPointEntries;
         private readonly List<Picker> _WindPickers;
         private readonly int _RecordID;
-
         public RecordDetailRegisterPage(int recordID) {
             InitializeComponent();
             _RecordID = recordID;
@@ -52,27 +51,30 @@ namespace MahjongScoreRecord {
             }
         }
 
-        private void PlayerPointEntry_Unfocused(object sender, FocusEventArgs e) {
+        private async void PlayerPointEntry_Unfocused(object sender, FocusEventArgs e) {
             Entry playerPointEntry = (Entry)sender;
             if (int.TryParse(playerPointEntry.Text, out int point)) {
                 playerPointEntry.Text = point.ToString();
 
                 if (_PlayerPointEntries.All(entry => !string.IsNullOrEmpty(entry.Text))) {
                     if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() == 4) {
-
-                        PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
+                        using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                            int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
+                            FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
+                            PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
                                                                  int.Parse(PlayerPoint2Entry.Text),
                                                                  int.Parse(PlayerPoint3Entry.Text),
                                                                  int.Parse(PlayerPoint4Entry.Text));
-                        PlayerWinds playerWinds = new PlayerWinds(((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
-                                                                  ((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
-                                                                  ((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
-                                                                  ((KeyValuePair<Winds, string>)WindPicker4.SelectedItem).Key);
-                        AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds);
-                        AdjustmentScore1Label.BindingContext = adjustmentPoints.AdjustmentScore1;
-                        AdjustmentScore2Label.BindingContext = adjustmentPoints.AdjustmentScore2;
-                        AdjustmentScore3Label.BindingContext = adjustmentPoints.AdjustmentScore3;
-                        AdjustmentScore4Label.BindingContext = adjustmentPoints.AdjustmentScore4;
+                            PlayerWinds playerWinds = new PlayerWinds(((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
+                                                                      ((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
+                                                                      ((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
+                                                                      ((KeyValuePair<Winds, string>)WindPicker4.SelectedItem).Key);
+                            AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds, fourPlayersBonus);
+                            AdjustmentScore1Label.BindingContext = adjustmentPoints.AdjustmentScore1;
+                            AdjustmentScore2Label.BindingContext = adjustmentPoints.AdjustmentScore2;
+                            AdjustmentScore3Label.BindingContext = adjustmentPoints.AdjustmentScore3;
+                            AdjustmentScore4Label.BindingContext = adjustmentPoints.AdjustmentScore4;
+                        }
                         return;
                     }
                 }
@@ -84,23 +86,26 @@ namespace MahjongScoreRecord {
             AdjustmentScore3Label.BindingContext = null;
             AdjustmentScore4Label.BindingContext = null;
         }
-        private void WindPicker_SelectedIndexChanged(object sender, EventArgs e) {
+        private async void WindPicker_SelectedIndexChanged(object sender, EventArgs e) {
             if (_PlayerPointEntries.All(entry => !string.IsNullOrEmpty(entry.Text))) {
                 if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() == 4) {
-
-                    PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
+                    using(SQLiteConnection db = await DBOperations.ConnectDB()) {
+                        int bonusID = (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
+                        FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
+                        PlayerPoints playerPoints = new PlayerPoints(int.Parse(PlayerPoint1Entry.Text),
                                                              int.Parse(PlayerPoint2Entry.Text),
                                                              int.Parse(PlayerPoint3Entry.Text),
                                                              int.Parse(PlayerPoint4Entry.Text));
-                    PlayerWinds playerWinds = new PlayerWinds(((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
-                                                              ((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
-                                                              ((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
-                                                              ((KeyValuePair<Winds, string>)WindPicker4.SelectedItem).Key);
-                    AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds);
-                    AdjustmentScore1Label.BindingContext = adjustmentPoints.AdjustmentScore1;
-                    AdjustmentScore2Label.BindingContext = adjustmentPoints.AdjustmentScore2;
-                    AdjustmentScore3Label.BindingContext = adjustmentPoints.AdjustmentScore3;
-                    AdjustmentScore4Label.BindingContext = adjustmentPoints.AdjustmentScore4;
+                        PlayerWinds playerWinds = new PlayerWinds(((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
+                                                                  ((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
+                                                                  ((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
+                                                                  ((KeyValuePair<Winds, string>)WindPicker4.SelectedItem).Key);
+                        AdjustmentPoints adjustmentPoints = new AdjustmentPoints(playerPoints, playerWinds, fourPlayersBonus);
+                        AdjustmentScore1Label.BindingContext = adjustmentPoints.AdjustmentScore1;
+                        AdjustmentScore2Label.BindingContext = adjustmentPoints.AdjustmentScore2;
+                        AdjustmentScore3Label.BindingContext = adjustmentPoints.AdjustmentScore3;
+                        AdjustmentScore4Label.BindingContext = adjustmentPoints.AdjustmentScore4;
+                    }
                     return;
                 }
             }
@@ -111,7 +116,7 @@ namespace MahjongScoreRecord {
         }
 
         private async void RegisterButton_Clicked(object sender, EventArgs e) {
-            if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() != 4) {
+            if (_WindPickers.Select(picker => ((KeyValuePair<Winds, string>)picker.SelectedItem).Key).Distinct().Count() != _WindPickers.Count()) {
                 await DisplayAlert("エラー", "風を正しく選択してください", "OK");
                 return;
             }
@@ -119,24 +124,24 @@ namespace MahjongScoreRecord {
                 await DisplayAlert("エラー", "全得点を正しく入力してください", "OK");
                 return;
             }
-
-            SQLiteConnection db = await DBOperations.ConnectDB();
-            int matchCount = 0;
-            if (db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Any()) {
-                matchCount = db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Select(detail => detail.MatchCount).Max();
+            using (SQLiteConnection db = await DBOperations.ConnectDB()) {
+                int matchCount = 0;
+                if (db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Any()) {
+                    matchCount = db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).Select(detail => detail.MatchCount).Max();
+                }
+                db.Insert(new FourPlayersRecordDetail() {
+                    RecordID = _RecordID,
+                    PlayerPoint1 = int.Parse(PlayerPoint1Entry.Text),
+                    PlayerPoint2 = int.Parse(PlayerPoint2Entry.Text),
+                    PlayerPoint3 = int.Parse(PlayerPoint3Entry.Text),
+                    PlayerPoint4 = int.Parse(PlayerPoint4Entry.Text),
+                    PlayerWind1 = (int)((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
+                    PlayerWind2 = (int)((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
+                    PlayerWind3 = (int)((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
+                    PlayerWind4 = (int)((KeyValuePair<Winds, string>)WindPicker4.SelectedItem).Key,
+                    MatchCount = matchCount + 1
+                });
             }
-            db.Insert(new FourPlayersRecordDetail() {
-                RecordID = _RecordID,
-                PlayerPoint1 = int.Parse(PlayerPoint1Entry.Text),
-                PlayerPoint2 = int.Parse(PlayerPoint2Entry.Text),
-                PlayerPoint3 = int.Parse(PlayerPoint3Entry.Text),
-                PlayerPoint4 = int.Parse(PlayerPoint4Entry.Text),
-                PlayerWind1 = (int)((KeyValuePair<Winds, string>)WindPicker1.SelectedItem).Key,
-                PlayerWind2 = (int)((KeyValuePair<Winds, string>)WindPicker2.SelectedItem).Key,
-                PlayerWind3 = (int)((KeyValuePair<Winds, string>)WindPicker3.SelectedItem).Key,
-                PlayerWind4 = (int)((KeyValuePair<Winds, string>)WindPicker4.SelectedItem).Key,
-                MatchCount = matchCount + 1
-            });
             await Navigation.PopModalAsync(true);
         }
 

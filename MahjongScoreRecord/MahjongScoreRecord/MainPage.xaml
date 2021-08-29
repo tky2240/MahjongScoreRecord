@@ -12,5 +12,6 @@
 
     <local:RecordListPage/>
     <local:PlayerListPage/>
-    
+    <local:BonusSettingPage/>
+
 </TabbedPage>

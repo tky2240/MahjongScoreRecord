@@ -7,6 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace MahjongScoreRecord {
+    public enum StoreIDs {
+        FourPlayerBonus = 1,
+        ThreePlayerBonus = 2,
+    }
     public enum Winds {
         None = 0,
         East = 1,
@@ -33,9 +37,9 @@ namespace MahjongScoreRecord {
             } else {
                 dbFile = await Globals.rootFolder.CreateFileAsync(Globals.dbFileName, CreationCollisionOption.ReplaceExisting);
             }
-            SQLiteConnection db = new SQLiteConnection(dbFile.Path);
-            db.CreateTables(types: new Type[] { typeof(Player), typeof(FourPlayersRecord), typeof(FourPlayersRecordDetail), typeof(ThreePlayersRecord), typeof(ThreePlayersRecordDetail), typeof(FourPlayersBonus), typeof(ThreePlayersBonus) });
-            db.Dispose();
+            using(SQLiteConnection db = new SQLiteConnection(dbFile.Path)) {
+                db.CreateTables(types: new Type[] { typeof(Player), typeof(FourPlayersRecord), typeof(FourPlayersRecordDetail), typeof(ThreePlayersRecord), typeof(ThreePlayersRecordDetail), typeof(FourPlayersBonus), typeof(ThreePlayersBonus) });
+            }
             return;
         }
         public static async Task<SQLiteConnection> ConnectDB() {
@@ -82,31 +86,37 @@ namespace MahjongScoreRecord {
         public int PlayerPoint4 { get; }
     }
     public class AdjustmentPoints {
-        private readonly int Bonus1 = 20000;
-        private readonly int Bonus2 = 10000;
-        private readonly int Bonus3 = -10000;
-        private readonly int Bonus4 = -20000;
-        private readonly int TopPrize = 20000;
-        private readonly int Kaeshi = 30000;
-        public AdjustmentPoints(PlayerPoints playerPoints, PlayerWinds playerWinds) {
+        private readonly int _Bonus1;
+        private readonly int _Bonus2;
+        private readonly int _Bonus3;
+        private readonly int _Bonus4;
+        private readonly int _OriginPoint;
+        private readonly int _ReferencePoint;
+        public AdjustmentPoints(PlayerPoints playerPoints, PlayerWinds playerWinds, FourPlayersBonus fourPlayersBonus) {
+            _OriginPoint = fourPlayersBonus.OriginPoint;
+            _ReferencePoint = fourPlayersBonus.ReferencePoint;
+            _Bonus1 = fourPlayersBonus.Bonus1;
+            _Bonus2 = fourPlayersBonus.Bonus2;
+            _Bonus3 = fourPlayersBonus.Bonus3;
+            _Bonus4 = fourPlayersBonus.Bonus4;
             List<(int player, int wind, int point)> pointAndPlayers = new List<(int, int, int)>() { ( 1, (int)playerWinds.PlayerWind1, playerPoints.PlayerPoint1 ),
                                                                                                     ( 2, (int)playerWinds.PlayerWind2, playerPoints.PlayerPoint2 ),
                                                                                                     ( 3, (int)playerWinds.PlayerWind3, playerPoints.PlayerPoint3 ),
                                                                                                     ( 4, (int)playerWinds.PlayerWind4, playerPoints.PlayerPoint4 )};
             List<(int player, int wind, int point)> sortedPointAndPlayers = pointAndPlayers.OrderBy(pointAndPlayer => pointAndPlayer.wind).OrderByDescending(pointAndPlayer => pointAndPlayer.point).ToList();
-            sortedPointAndPlayers[0] = (sortedPointAndPlayers[0].player, sortedPointAndPlayers[0].wind, sortedPointAndPlayers[0].point + Bonus1 + TopPrize);
-            sortedPointAndPlayers[1] = (sortedPointAndPlayers[1].player, sortedPointAndPlayers[1].wind, sortedPointAndPlayers[1].point + Bonus2);
-            sortedPointAndPlayers[2] = (sortedPointAndPlayers[2].player, sortedPointAndPlayers[2].wind, sortedPointAndPlayers[2].point + Bonus3);
-            sortedPointAndPlayers[3] = (sortedPointAndPlayers[3].player, sortedPointAndPlayers[3].wind, sortedPointAndPlayers[3].point + Bonus4);
+            sortedPointAndPlayers[0] = (sortedPointAndPlayers[0].player, sortedPointAndPlayers[0].wind, sortedPointAndPlayers[0].point + _Bonus1 * 1000 + (_ReferencePoint - _OriginPoint) * 4);
+            sortedPointAndPlayers[1] = (sortedPointAndPlayers[1].player, sortedPointAndPlayers[1].wind, sortedPointAndPlayers[1].point + _Bonus2 * 1000);
+            sortedPointAndPlayers[2] = (sortedPointAndPlayers[2].player, sortedPointAndPlayers[2].wind, sortedPointAndPlayers[2].point + _Bonus3 * 1000);
+            sortedPointAndPlayers[3] = (sortedPointAndPlayers[3].player, sortedPointAndPlayers[3].wind, sortedPointAndPlayers[3].point + _Bonus4 * 1000);
 
             AdjustmentPoint1 = sortedPointAndPlayers.First(pointAndPlayer => pointAndPlayer.player == 1).point;
             AdjustmentPoint2 = sortedPointAndPlayers.First(pointAndPlayer => pointAndPlayer.player == 2).point;
             AdjustmentPoint3 = sortedPointAndPlayers.First(pointAndPlayer => pointAndPlayer.player == 3).point;
             AdjustmentPoint4 = sortedPointAndPlayers.First(pointAndPlayer => pointAndPlayer.player == 4).point;
-            AdjustmentScore1 = Math.Truncate((AdjustmentPoint1 - Kaeshi) / 100.0) / 10;
-            AdjustmentScore2 = Math.Truncate((AdjustmentPoint2 - Kaeshi) / 100.0) / 10;
-            AdjustmentScore3 = Math.Truncate((AdjustmentPoint3 - Kaeshi) / 100.0) / 10;
-            AdjustmentScore4 = Math.Truncate((AdjustmentPoint4 - Kaeshi) / 100.0) / 10;
+            AdjustmentScore1 = Math.Round((AdjustmentPoint1 - _ReferencePoint) / 1000.0, 1 ,MidpointRounding.AwayFromZero);
+            AdjustmentScore2 = Math.Round((AdjustmentPoint2 - _ReferencePoint) / 1000.0, 1, MidpointRounding.AwayFromZero);
+            AdjustmentScore3 = Math.Round((AdjustmentPoint3 - _ReferencePoint) / 1000.0, 1, MidpointRounding.AwayFromZero);
+            AdjustmentScore4 = Math.Round((AdjustmentPoint4 - _ReferencePoint) / 1000.0, 1, MidpointRounding.AwayFromZero);
         }
         public int AdjustmentPoint1 { get; }
         public int AdjustmentPoint2 { get; }
