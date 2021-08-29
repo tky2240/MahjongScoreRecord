@@ -51,7 +51,7 @@ namespace MahjongScoreRecord {
     }
     public static class PointStringConverter {
         public static string DeleteNonNumericCharacterWithMinus(string input) {
-            string output = "";
+            string output;
             if (!int.TryParse(input, out int bonus)) {
                 if (Regex.IsMatch(input, @"^-.*$")) {
                     output = "-" + Regex.Replace(input.Substring(1), @"[^\d]*", "");
@@ -64,7 +64,7 @@ namespace MahjongScoreRecord {
             return output;
         }
         public static string DeleteNonNumericCharacter(string input) {
-            string output = "";
+            string output;
             if (!int.TryParse(input, out int bonus)) {
                 output = Regex.Replace(input, @"[^\d]*", "");
             } else {
