@@ -13,7 +13,7 @@
         </Frame>
         <Frame HasShadow="True" BorderColor="Gray" Padding="5"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
-               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.85}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.8}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
             <ListView x:Name="PlayerListView" ItemTapped="PlayerListView_ItemTapped" SeparatorColor="Gray" HasUnevenRows="True">
@@ -28,6 +28,12 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Frame>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center"
+                     RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=10}"
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.95}">
+            <RadioButton x:Name="FourPlayersModeRadioButton" Content="四麻" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="PlayersModeRadioButton_CheckedChanged"/>
+            <RadioButton x:Name="ThreePlayersModeRadioButton" Content="三麻" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="PlayersModeRadioButton_CheckedChanged"/>
+        </StackLayout>
         <Button x:Name="RegisterPlayerButton" Text="+" FontSize="Title" CornerRadius="300" BackgroundColor="#2196F3" TextColor="White" BorderColor="Black" BorderWidth="1"  WidthRequest="80" HeightRequest="80"
                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0, Constant=-120}"
                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0, Constant=-120}"

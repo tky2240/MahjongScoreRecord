@@ -13,6 +13,11 @@ namespace MahjongScoreRecord {
         }
 
         private async void BonusSettingPage_Appearing(object sender, EventArgs e) {
+            if (Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
+                FourPlayersModeRadioButton.IsChecked = true;
+            } else if (Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
+                ThreePlayersModeRadioButton.IsChecked = true;
+            }
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 SetCurrentBonusColor(db);
             }
@@ -28,25 +33,53 @@ namespace MahjongScoreRecord {
             if(selectedActionString == BonusSettingActions.Edit.ToString()) {
                 await Navigation.PushModalAsync(new NavigationPage(new BonusSettingUpdatePage(selectedBonus.BonusID)));
             }else if(selectedActionString == BonusSettingActions.Set.ToString()){
-                Globals.SetCurrentFourPlayersBonusID(selectedBonus.BonusID);
                 using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                     SetCurrentBonusColor(db);
                 }
-                await DisplayAlert("ウマ・オカ変更", $"{selectedBonus.PrizeSettingText}\n1家:{selectedBonus.Bonus1} 2家:{selectedBonus.Bonus2} 3家:{selectedBonus.Bonus3} 4家:{selectedBonus.Bonus4}に変更しました", "OK");
+                if(Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
+                    await Globals.SetCurrentFourPlayersBonusIDAsync(selectedBonus.BonusID);
+                    await DisplayAlert("ウマ・オカ変更", $"{selectedBonus.PrizeSettingText}\n1家:{selectedBonus.Bonus1} 2家:{selectedBonus.Bonus2} 3家:{selectedBonus.Bonus3} 4家:{selectedBonus.Bonus4}に変更しました", "OK");
+                }else if(Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
+                    await Globals.SetCurrentThreePlayersBonusIDAsync(selectedBonus.BonusID);
+                    await DisplayAlert("ウマ・オカ変更", $"{selectedBonus.PrizeSettingText}\n1家:{selectedBonus.Bonus1} 2家:{selectedBonus.Bonus2} 3家:{selectedBonus.Bonus3} に変更しました", "OK");
+                }
             }
             ((ListView)sender).SelectedItem = null;
         }
         private void SetCurrentBonusColor(SQLiteConnection db) {
             List<BonusListViewItem> bonusListViewItems = new List<BonusListViewItem>();
-            int bonusID = Globals.GetCurrentFourPlayersBonusID();
-            db.Table<FourPlayersBonus>().ToList().ForEach(bonus => {
-                if (bonus.BonusID == bonusID) {
-                    bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow));
-                } else {
-                    bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White));
-                }
-            });
+            int bonusID = -1;
+            if(Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
+                bonusID = Globals.GetCurrentFourPlayersBonusID();
+                db.Table<FourPlayersBonus>().ToList().ForEach(bonus => {
+                    if (bonus.BonusID == bonusID) {
+                        bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow));
+                    } else {
+                        bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White));
+                    }
+                });
+            }else if(Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
+                bonusID = Globals.GetCurrentThreePlayersBonusID();
+                db.Table<ThreePlayersBonus>().ToList().ForEach(bonus => {
+                    if (bonus.BonusID == bonusID) {
+                        bonusListViewItems.Add(new BonusListViewItem(bonus, Color.LightYellow));
+                    } else {
+                        bonusListViewItems.Add(new BonusListViewItem(bonus, Color.White));
+                    }
+                });
+            }
             BonusListView.ItemsSource = bonusListViewItems;
+        }
+        private async void PlayersModeRadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e) {
+            if (FourPlayersModeRadioButton.IsChecked) {
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Four);
+            } else if (ThreePlayersModeRadioButton.IsChecked) {
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Three);
+            } else {
+                await DisplayAlert("エラー", "エラーが発生しました\n四麻モードに設定します", "OK");
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Four);
+            }
+            BonusSettingPage_Appearing(null, null);
         }
         private async void BonusRegisterButton_Clicked(object sender, EventArgs e) {
             await Navigation.PushModalAsync(new NavigationPage(new BonusSettingRegisterPage()), true);
@@ -66,6 +99,23 @@ namespace MahjongScoreRecord {
                 BonusText4 = $"4家:{Bonus4}";
                 PrizeSettingText = $"原点{OriginPoint}の{ReferencePoint}返し";
                 BackGroundColor = backGroudColor;
+                PlayersMode = PlayersMode.Four;
+            }
+            public BonusListViewItem(ThreePlayersBonus threePlayersBonus, Color backGroudColor) {
+                BonusID = threePlayersBonus.BonusID;
+                OriginPoint = threePlayersBonus.OriginPoint;
+                ReferencePoint = threePlayersBonus.ReferencePoint;
+                Bonus1 = threePlayersBonus.Bonus1;
+                Bonus2 = threePlayersBonus.Bonus2;
+                Bonus3 = threePlayersBonus.Bonus3;
+                Bonus4 = 0;
+                BonusText1 = $"1家:{Bonus1}";
+                BonusText2 = $"2家:{Bonus2}";
+                BonusText3 = $"3家:{Bonus3}";
+                BonusText4 = "";
+                PrizeSettingText = $"原点{OriginPoint}の{ReferencePoint}返し";
+                BackGroundColor = backGroudColor;
+                PlayersMode = PlayersMode.Three;
             }
             public int BonusID { get; }
             public string PrizeSettingText { get; }
@@ -80,10 +130,7 @@ namespace MahjongScoreRecord {
             public string BonusText3 { get; }
             public string BonusText4 { get; }
             public Color BackGroundColor { get; }
-        }
-
-        private void EditButton_Clicked(object sender, EventArgs e) {
-
+            public PlayersMode PlayersMode { get; }
         }
     }
 }

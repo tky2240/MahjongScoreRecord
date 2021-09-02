@@ -9,6 +9,11 @@ using System.Text.RegularExpressions;
 using Xamarin.Forms;
 
 namespace MahjongScoreRecord {
+    public enum PlayersMode {
+        None = 0,
+        Three = 3,
+        Four = 4,
+    }
     public enum BonusSettingActions {
         None = 0,
         Cancel = 1,
@@ -36,17 +41,29 @@ namespace MahjongScoreRecord {
             new KeyValuePair<Winds , string>(Winds.West,"西" ),
             new KeyValuePair<Winds , string>(Winds.North,"北" )
         };
+        public static string PlayersModeKey = "PlayersMode";
+        public static PlayersMode GetCurrentPlayersMode() {
+            return (PlayersMode)Application.Current.Properties[PlayersModeKey];
+        }
+        public static async Task SetCurrentPlayersModeAsync(PlayersMode playersMode) {
+            if(playersMode != PlayersMode.None) {
+                Application.Current.Properties[PlayersModeKey] = (int)playersMode;
+                await Application.Current.SavePropertiesAsync();
+            }
+        }
         public static int GetCurrentFourPlayersBonusID() {
             return (int)Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()];
         }
-        public static void SetCurrentFourPlayersBonusID(int bonusID) {
+        public static async Task SetCurrentFourPlayersBonusIDAsync(int bonusID) {
             Application.Current.Properties[StoreIDs.FourPlayerBonus.ToString()] = bonusID;
+            await Application.Current.SavePropertiesAsync();
         }
         public static int GetCurrentThreePlayersBonusID() {
             return (int)Application.Current.Properties[StoreIDs.ThreePlayerBonus.ToString()];
         }
-        public static void SetCurrentThreePlayersBonusID(int bonusID) {
+        public static async Task SetCurrentThreePlayersBonusIDAsync(int bonusID) {
             Application.Current.Properties[StoreIDs.ThreePlayerBonus.ToString()] = bonusID;
+            await Application.Current.SavePropertiesAsync();
         }
     }
     public static class PointStringConverter {
@@ -83,7 +100,7 @@ namespace MahjongScoreRecord {
     public class DBOperations {
         public static async Task CreateDB() {
             IFile dbFile;
-            if (await Globals.rootFolder.CheckExistsAsync("Records.sqlite3") == ExistenceCheckResult.FileExists) {
+            if (await Globals.rootFolder.CheckExistsAsync(Globals.dbFileName) == ExistenceCheckResult.FileExists) {
                 dbFile = await Globals.rootFolder.CreateFileAsync(Globals.dbFileName, CreationCollisionOption.OpenIfExists);
             } else {
                 dbFile = await Globals.rootFolder.CreateFileAsync(Globals.dbFileName, CreationCollisionOption.ReplaceExisting);

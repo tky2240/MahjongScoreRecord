@@ -76,7 +76,7 @@ namespace MahjongScoreRecord {
                 } else {
                     if (await DisplayAlert("削除確認", "表示している設定を削除してもよろしいですか？", "Yes", "No")) {
                         db.Table<FourPlayersBonus>().Delete(bonus => bonus.BonusID == _BonusID);
-                        Globals.SetCurrentFourPlayersBonusID(db.Table<FourPlayersBonus>().First().BonusID);
+                        await Globals.SetCurrentFourPlayersBonusIDAsync(db.Table<FourPlayersBonus>().First().BonusID);
                         await Navigation.PopModalAsync(true);
                     }
                 }

@@ -36,11 +36,14 @@ namespace MahjongScoreRecord {
                         Bonus3 = -10,
                     });
                 }
+                if (!Application.Current.Properties.ContainsKey(Globals.PlayersModeKey)) {
+                    await Globals.SetCurrentPlayersModeAsync(PlayersMode.Four);
+                }
                 if (!Application.Current.Properties.ContainsKey(StoreIDs.FourPlayerBonus.ToString())) {
-                    Globals.SetCurrentFourPlayersBonusID(db.Table<FourPlayersBonus>().First().BonusID);
+                    await Globals.SetCurrentFourPlayersBonusIDAsync(db.Table<FourPlayersBonus>().First().BonusID);
                 }
                 if (!Application.Current.Properties.ContainsKey(StoreIDs.ThreePlayerBonus.ToString())) {
-                    Globals.SetCurrentThreePlayersBonusID(db.Table<ThreePlayersBonus>().First().BonusID);
+                    await Globals.SetCurrentThreePlayersBonusIDAsync(db.Table<ThreePlayersBonus>().First().BonusID);
                 }
             }
             Application.Current.MainPage = new NavigationPage(_NextPage);

@@ -12,6 +12,11 @@ namespace MahjongScoreRecord {
             InitializeComponent();
         }
         private async void PlayerListPage_Appearing(object sender, EventArgs e) {
+            if(Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
+                FourPlayersModeRadioButton.IsChecked = true;
+            }else if(Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
+                ThreePlayersModeRadioButton.IsChecked = true;
+            }
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 PlayerListView.ItemsSource = db.Table<Player>().ToList();
             }
@@ -25,7 +30,16 @@ namespace MahjongScoreRecord {
             playerListView.SelectedItem = null;
             await Navigation.PushModalAsync(new NavigationPage(new PlayerDetailPage(selectedPlayer.PlayerID)), true);
         }
-
+        private async void PlayersModeRadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e) {
+            if (FourPlayersModeRadioButton.IsChecked) {
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Four);
+            } else if (ThreePlayersModeRadioButton.IsChecked) {
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Three);
+            } else {
+                await DisplayAlert("エラー", "エラーが発生しました\n四麻モードに設定します", "OK");
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Four);
+            }
+        }
         private async void RegisterPlayerButton_Clicked(object sender, EventArgs e) {
             string playerName = await DisplayPromptAsync("雀士名", "登録する雀士の名前を入力してください", "OK", "Cancel", "hoge", 64, Keyboard.Text, "");
             if (playerName == null) {

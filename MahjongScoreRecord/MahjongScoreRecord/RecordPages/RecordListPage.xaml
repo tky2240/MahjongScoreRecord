@@ -3,16 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MahjongScoreRecord.RecordListPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:local="clr-namespace:MahjongScoreRecord"
              Title="戦績" NavigationPage.HasNavigationBar="False" Padding="0" Appearing="RecordListPage_Appearing">
     <RelativeLayout>
         <Frame BackgroundColor="#2196F3" CornerRadius="0" Padding="0"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
-            <Label Text="戦績一覧" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
+            <RelativeLayout>
+                <Label Text="戦績一覧" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"
+                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+                       RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0}"/>
+            </RelativeLayout>
         </Frame>
         <Frame HasShadow="True" BorderColor="Gray" Padding="5"
             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
-               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.85}"
+               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.8}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.125}">
             <ListView x:Name="RecordListView" ItemTapped="RecordListView_ItemTapped" SeparatorColor="Gray" SeparatorVisibility="Default" HasUnevenRows="True">
@@ -35,19 +40,30 @@
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label Text="{Binding RecordName}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label x:Name="RecordNameLabel" Text="{Binding RecordName}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
                                         <Frame Grid.Row="1" Grid.Column="0" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label x:Name="PlayerNameLabel1" Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
-                                        <Frame Grid.Row="1" Grid.Column="1" BorderColor="Gray" Padding="4" Margin="4">
+                                        <Frame x:Name="PlayerNameLabel2" Grid.Row="1" Grid.Column="1" BorderColor="Gray" Padding="4" Margin="4">
                                             <Label Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
-                                        <Frame Grid.Row="1" Grid.Column="2" BorderColor="Gray" Padding="4" Margin="4">
+                                        <Frame x:Name="PlayerNameLabel3" Grid.Row="1" Grid.Column="2" BorderColor="Gray" Padding="4" Margin="4">
                                             <Label Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
-                                        <Frame Grid.Row="1" Grid.Column="3" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label Text="{Binding PlayerName4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        <Frame x:Name="PlayerNameLabel4" Grid.Row="1" Grid.Column="3" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label Text="{Binding PlayerName4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Four}">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                        <Setter Property="IsVisible" Value="True"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Three}">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                        <Setter Property="IsVisible" Value="False"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
                                         </Frame>
                                     </Grid>
                                 </StackLayout>
@@ -57,6 +73,12 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Frame>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center"
+                     RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=10}"
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.95}">
+            <RadioButton x:Name="FourPlayersModeRadioButton" Content="四麻" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="PlayersModeRadioButton_CheckedChanged"/>
+            <RadioButton x:Name="ThreePlayersModeRadioButton" Content="三麻" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="PlayersModeRadioButton_CheckedChanged"/>
+        </StackLayout>
         <Button x:Name="RegisterRecordButton" Text="+" FontSize="Title" CornerRadius="300" BackgroundColor="#2196F3" TextColor="White" BorderColor="Black" BorderWidth="1"  WidthRequest="80" HeightRequest="80"
                 RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0, Constant=-120}"
                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0, Constant=-120}"

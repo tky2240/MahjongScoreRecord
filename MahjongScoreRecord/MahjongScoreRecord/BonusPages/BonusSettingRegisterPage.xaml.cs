@@ -54,7 +54,7 @@ namespace MahjongScoreRecord {
                     Bonus3 = int.Parse(BonusEntry3.Text),
                     Bonus4 = int.Parse(BonusEntry4.Text)
                 });
-                Globals.SetCurrentFourPlayersBonusID(db.Table<FourPlayersBonus>().Last().BonusID);
+                await Globals.SetCurrentFourPlayersBonusIDAsync(db.Table<FourPlayersBonus>().Last().BonusID);
             }
             await Navigation.PopModalAsync(true);
         }

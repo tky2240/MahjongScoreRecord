@@ -15,9 +15,16 @@ namespace MahjongScoreRecord {
         private async void RecordListPage_Appearing(object sender, EventArgs e) {
             List<RecordListItem> recordListItems = new List<RecordListItem>();
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
-                List<FourPlayersRecord> fourPlayersRecords = db.Table<FourPlayersRecord>().ToList();
                 List<Player> players = db.Table<Player>().ToList();
-                fourPlayersRecords.ForEach(record => recordListItems.Add(new RecordListItem(record, players)));
+                if (Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
+                    List<FourPlayersRecord> fourPlayersRecords = db.Table<FourPlayersRecord>().ToList();
+                    fourPlayersRecords.ForEach(record => recordListItems.Add(new RecordListItem(record, players)));
+                    FourPlayersModeRadioButton.IsChecked = true;
+                } else if (Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
+                    List<ThreePlayersRecord> threePlayersRecords = db.Table<ThreePlayersRecord>().ToList();
+                    threePlayersRecords.ForEach(record => recordListItems.Add(new RecordListItem(record, players)));
+                    ThreePlayersModeRadioButton.IsChecked = true;
+                }
             }
             RecordListView.ItemsSource = recordListItems;
         }
@@ -29,6 +36,17 @@ namespace MahjongScoreRecord {
             }
             recordListView.SelectedItem = null;
             await Navigation.PushModalAsync(new NavigationPage(new RecordDetailListPage(selectedRecord.RecordID)));
+        }
+        private async void PlayersModeRadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e) {
+            if (FourPlayersModeRadioButton.IsChecked) {
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Four);
+            } else if (ThreePlayersModeRadioButton.IsChecked) {
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Three);
+            } else {
+                await DisplayAlert("エラー", "エラーが発生しました\n四麻モードに設定します", "OK");
+                await Globals.SetCurrentPlayersModeAsync(PlayersMode.Four);
+            }
+            RecordListPage_Appearing(null, null);
         }
         private async void RegisterRecordButton_Clicked(object sender, EventArgs e) {
             List<Player> players = new List<Player>();
@@ -46,6 +64,17 @@ namespace MahjongScoreRecord {
                 PlayerName3 = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID3).PlayerName;
                 PlayerName4 = players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName;
                 RecordTime = fourPlayersRecord.RecordTime;
+                PlayersMode = PlayersMode.Four;
+            }
+            public RecordListItem(ThreePlayersRecord threePlayersRecord, List<Player> players) {
+                RecordID = threePlayersRecord.RecordID;
+                RecordName = threePlayersRecord.RecordName;
+                PlayerName1 = players.First(player => player.PlayerID == threePlayersRecord.PlayerID1).PlayerName;
+                PlayerName2 = players.First(player => player.PlayerID == threePlayersRecord.PlayerID2).PlayerName;
+                PlayerName3 = players.First(player => player.PlayerID == threePlayersRecord.PlayerID3).PlayerName;
+                PlayerName4 = null;
+                RecordTime = threePlayersRecord.RecordTime;
+                PlayersMode = PlayersMode.Three;
             }
             public int RecordID { get; }
             public string RecordName { get; }
@@ -54,6 +83,7 @@ namespace MahjongScoreRecord {
             public string PlayerName3 { get; }
             public string PlayerName4 { get; }
             public DateTime RecordTime { get; }
+            public PlayersMode PlayersMode { get; }
         }
     }
 }
