@@ -12,7 +12,7 @@
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
             <Label Text="レート設定一覧" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
         </Frame>
-        <Frame HasShadow="True" BorderColor="Gray" Padding="5"
+        <Frame HasShadow="True" BorderColor="Gray" Padding="5" Margin="10"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.8}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
@@ -81,7 +81,7 @@
         </Frame>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center"
                      RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=10}"
-                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.95}">
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.925}">
             <RadioButton x:Name="FourPlayersModeRadioButton" Content="四麻" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="PlayersModeRadioButton_CheckedChanged"/>
             <RadioButton x:Name="ThreePlayersModeRadioButton" Content="三麻" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="PlayersModeRadioButton_CheckedChanged"/>
         </StackLayout>

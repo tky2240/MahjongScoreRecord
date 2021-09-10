@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MahjongScoreRecord.BonusSettingRegisterPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:local="clr-namespace:MahjongScoreRecord"
              Title="レート登録" NavigationPage.HasNavigationBar="False" Padding="0">
     <ContentPage.Content>
         <RelativeLayout>
@@ -10,7 +11,7 @@
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
                 <Label Text="レート設定登録" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
             </Frame>
-            <Frame HasShadow="True" BorderColor="Gray" Padding="5"
+            <Frame HasShadow="True" BorderColor="Gray" Padding="5" Margin="10"
             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
@@ -32,9 +33,21 @@
                         <Label Text="3家ウマ" FontSize="Medium"/>
                         <Entry x:Name="BonusEntry3" Placeholder="Bonus3" FontSize="Body" Keyboard="Telephone" MaxLength="4"
                                    TextChanged="BonusEntry_TextChanged" Unfocused="BonusEntry_Unfocused"/>
-                        <Label Text="4家ウマ" FontSize="Medium"/>
-                        <Entry x:Name="BonusEntry4" Placeholder="Bonus4" FontSize="Body" Keyboard="Telephone" MaxLength="4"
+                        <StackLayout x:Name="BonusStackLayout4">
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding .}" Value="{x:Static local:PlayersMode.Four}">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                    <Setter Property="IsVisible"  Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding .}" Value="{x:Static local:PlayersMode.Three}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                            <Label Text="4家ウマ" FontSize="Medium"/>
+                            <Entry x:Name="BonusEntry4" Placeholder="Bonus4" FontSize="Body" Keyboard="Telephone" MaxLength="4"
                                    TextChanged="BonusEntry_TextChanged" Unfocused="BonusEntry_Unfocused"/>
+                        </StackLayout>
                         <Button x:Name="RegisterButton" Text="登録" Clicked="RegisterButton_Clicked"/>
                     </StackLayout>
                 </ScrollView>

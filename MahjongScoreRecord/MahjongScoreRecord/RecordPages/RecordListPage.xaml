@@ -15,7 +15,7 @@
                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0}"/>
             </RelativeLayout>
         </Frame>
-        <Frame HasShadow="True" BorderColor="Gray" Padding="5"
+        <Frame HasShadow="True" BorderColor="Gray" Padding="5" Margin="10"
             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.8}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
@@ -28,7 +28,17 @@
                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1.0}">
                                 <StackLayout>
-                                    <Grid ColumnSpacing="1" RowSpacing="1">
+                                    <Grid x:Name="FourPlayersGrid" ColumnSpacing="1" RowSpacing="1">
+                                        <Grid.Triggers>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Four}">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                                <Setter Property="IsVisible" Value="True"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Three}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </Grid.Triggers>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
@@ -40,30 +50,52 @@
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
                                         <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label x:Name="RecordNameLabel" Text="{Binding RecordName}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label x:Name="FourPlayersRecordNameLabel" Text="{Binding RecordName}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
                                         <Frame Grid.Row="1" Grid.Column="0" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label x:Name="PlayerNameLabel1" Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label x:Name="FourPlayersPlayerNameLabel1" Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
-                                        <Frame x:Name="PlayerNameLabel2" Grid.Row="1" Grid.Column="1" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        <Frame Grid.Row="1" Grid.Column="1" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label x:Name="FourPlayersPlayerNameLabel2" Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
-                                        <Frame x:Name="PlayerNameLabel3" Grid.Row="1" Grid.Column="2" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        <Frame Grid.Row="1" Grid.Column="2" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label x:Name="FourPlayersPlayerNameLabel3" Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
-                                        <Frame x:Name="PlayerNameLabel4" Grid.Row="1" Grid.Column="3" BorderColor="Gray" Padding="4" Margin="4">
-                                            <Label Text="{Binding PlayerName4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center">
-                                                <Label.Triggers>
-                                                    <DataTrigger TargetType="Label" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Four}">
-                                                        <Setter Property="IsEnabled" Value="True"/>
-                                                        <Setter Property="IsVisible" Value="True"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger TargetType="Label" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Three}">
-                                                        <Setter Property="IsEnabled" Value="False"/>
-                                                        <Setter Property="IsVisible" Value="False"/>
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
+                                        <Frame Grid.Row="1" Grid.Column="3" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label x:Name="FourPlayersPlayerNameLabel4" Text="{Binding PlayerName4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Frame>
+                                    </Grid>
+                                    <Grid x:Name="ThreePlayersGrid" ColumnSpacing="1" RowSpacing="1">
+                                        <Grid.Triggers>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Four}">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Grid" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Three}">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                                <Setter Property="IsVisible" Value="True"/>
+                                            </DataTrigger>
+                                        </Grid.Triggers>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Frame Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label x:Name="ThreePlayersRecordNameLabel" Text="{Binding RecordName}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="0" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label x:Name="ThreePlayersPlayerNameLabel1" Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="1" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label x:Name="ThreePlayersPlayerNameLabel2" Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="2" BorderColor="Gray" Padding="4" Margin="4">
+                                            <Label x:Name="ThreePlayersPlayerNameLabel3" Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Frame>
                                     </Grid>
                                 </StackLayout>
@@ -75,7 +107,7 @@
         </Frame>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center"
                      RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=10}"
-                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.95}">
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.925}">
             <RadioButton x:Name="FourPlayersModeRadioButton" Content="四麻" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="PlayersModeRadioButton_CheckedChanged"/>
             <RadioButton x:Name="ThreePlayersModeRadioButton" Content="三麻" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="PlayersModeRadioButton_CheckedChanged"/>
         </StackLayout>

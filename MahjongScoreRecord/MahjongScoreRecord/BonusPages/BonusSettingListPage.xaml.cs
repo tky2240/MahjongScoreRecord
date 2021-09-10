@@ -1,6 +1,7 @@
 ﻿using MahjongScoreRecord.Models;
 using SQLite;
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -24,7 +25,6 @@ namespace MahjongScoreRecord {
         }
 
         private async void BonusListView_ItemTapped(object sender, ItemTappedEventArgs e) {
-
             BonusListViewItem selectedBonus= (BonusListViewItem)((ListView)sender).SelectedItem;
             if(selectedBonus == null) {
                 return;
@@ -33,15 +33,15 @@ namespace MahjongScoreRecord {
             if(selectedActionString == BonusSettingActions.Edit.ToString()) {
                 await Navigation.PushModalAsync(new NavigationPage(new BonusSettingUpdatePage(selectedBonus.BonusID)));
             }else if(selectedActionString == BonusSettingActions.Set.ToString()){
-                using (SQLiteConnection db = await DBOperations.ConnectDB()) {
-                    SetCurrentBonusColor(db);
-                }
                 if(Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
                     await Globals.SetCurrentFourPlayersBonusIDAsync(selectedBonus.BonusID);
                     await DisplayAlert("ウマ・オカ変更", $"{selectedBonus.PrizeSettingText}\n1家:{selectedBonus.Bonus1} 2家:{selectedBonus.Bonus2} 3家:{selectedBonus.Bonus3} 4家:{selectedBonus.Bonus4}に変更しました", "OK");
                 }else if(Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
                     await Globals.SetCurrentThreePlayersBonusIDAsync(selectedBonus.BonusID);
                     await DisplayAlert("ウマ・オカ変更", $"{selectedBonus.PrizeSettingText}\n1家:{selectedBonus.Bonus1} 2家:{selectedBonus.Bonus2} 3家:{selectedBonus.Bonus3} に変更しました", "OK");
+                }
+                using (SQLiteConnection db = await DBOperations.ConnectDB()) {
+                    SetCurrentBonusColor(db);
                 }
             }
             ((ListView)sender).SelectedItem = null;

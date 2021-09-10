@@ -19,24 +19,43 @@ namespace MahjongScoreRecord {
 
         private async void RecordDetailPage_Appearing(object sender, EventArgs e) {
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
-                List<FourPlayersRecordDetail> fourPlayersRecordDetails = db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).ToList();
-                List<Player> players = db.Table<Player>().ToList();
-                FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
-                int bonusID = Globals.GetCurrentFourPlayersBonusID();
-                FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
-                RecordNameLabel.BindingContext = fourPlayersRecord.RecordName;
-                RecordTimeLabel.BindingContext = fourPlayersRecord.RecordTime.ToString();
-                PlayerNames playerNames = new PlayerNames(players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName,
-                                                          players.First(player => player.PlayerID == fourPlayersRecord.PlayerID2).PlayerName,
-                                                          players.First(player => player.PlayerID == fourPlayersRecord.PlayerID3).PlayerName,
-                                                          players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName);
                 List<RecordDetailListItem> recordDetailListViewItems = new List<RecordDetailListItem>();
-                fourPlayersRecordDetails.ForEach(detail => {
-                    PlayerPoints playerPoints = new PlayerPoints(detail.PlayerPoint1, detail.PlayerPoint2, detail.PlayerPoint3, detail.PlayerPoint4);
-                    recordDetailListViewItems.Add(new RecordDetailListItem(detail.RecordDetailID, playerNames, playerPoints,
-                                                  new AdjustmentPoints(playerPoints, new PlayerWinds((Winds)detail.PlayerWind1, (Winds)detail.PlayerWind2, (Winds)detail.PlayerWind3, (Winds)detail.PlayerWind4), fourPlayersBonus),
-                                                  detail.MatchCount));
-                });
+                if (Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
+                    List<FourPlayersRecordDetail> fourPlayersRecordDetails = db.Table<FourPlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).ToList();
+                    List<Player> players = db.Table<Player>().ToList();
+                    FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
+                    int bonusID = Globals.GetCurrentFourPlayersBonusID();
+                    FourPlayersBonus fourPlayersBonus = db.Table<FourPlayersBonus>().First(bonus => bonus.BonusID == bonusID);
+                    RecordNameLabel.BindingContext = fourPlayersRecord.RecordName;
+                    RecordTimeLabel.BindingContext = fourPlayersRecord.RecordTime.ToString();
+                    PlayerNames playerNames = new PlayerNames(players.First(player => player.PlayerID == fourPlayersRecord.PlayerID1).PlayerName,
+                                                              players.First(player => player.PlayerID == fourPlayersRecord.PlayerID2).PlayerName,
+                                                              players.First(player => player.PlayerID == fourPlayersRecord.PlayerID3).PlayerName,
+                                                              players.First(player => player.PlayerID == fourPlayersRecord.PlayerID4).PlayerName);
+                    fourPlayersRecordDetails.ForEach(detail => {
+                        PlayerPoints playerPoints = new PlayerPoints(detail.PlayerPoint1, detail.PlayerPoint2, detail.PlayerPoint3, detail.PlayerPoint4);
+                        recordDetailListViewItems.Add(new RecordDetailListItem(detail.RecordDetailID, playerNames, playerPoints,
+                                                      new AdjustmentPoints(playerPoints, new PlayerWinds((Winds)detail.PlayerWind1, (Winds)detail.PlayerWind2, (Winds)detail.PlayerWind3, (Winds)detail.PlayerWind4), fourPlayersBonus),
+                                                      detail.MatchCount));
+                    });
+                }else if(Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
+                    List<ThreePlayersRecordDetail> threePlayersRecordDetails = db.Table<ThreePlayersRecordDetail>().Where(detail => detail.RecordID == _RecordID).ToList();
+                    List<Player> players = db.Table<Player>().ToList();
+                    ThreePlayersRecord threePlayersRecord = db.Table<ThreePlayersRecord>().First(record => record.RecordID == _RecordID);
+                    int bonusID = Globals.GetCurrentThreePlayersBonusID();
+                    ThreePlayersBonus threePlayersBonus = db.Table<ThreePlayersBonus>().First(bonus => bonus.BonusID == bonusID);
+                    RecordNameLabel.BindingContext = threePlayersRecord.RecordName;
+                    RecordTimeLabel.BindingContext = threePlayersRecord.RecordTime.ToString();
+                    PlayerNames playerNames = new PlayerNames(players.First(player => player.PlayerID == threePlayersRecord.PlayerID1).PlayerName,
+                                                              players.First(player => player.PlayerID == threePlayersRecord.PlayerID2).PlayerName,
+                                                              players.First(player => player.PlayerID == threePlayersRecord.PlayerID3).PlayerName);
+                    threePlayersRecordDetails.ForEach(detail => {
+                        PlayerPoints playerPoints = new PlayerPoints(detail.PlayerPoint1, detail.PlayerPoint2, detail.PlayerPoint3);
+                        recordDetailListViewItems.Add(new RecordDetailListItem(detail.RecordDetailID, playerNames, playerPoints,
+                                                      new AdjustmentPoints(playerPoints, new PlayerWinds((Winds)detail.PlayerWind1, (Winds)detail.PlayerWind2, (Winds)detail.PlayerWind3), threePlayersBonus),
+                                                      detail.MatchCount));
+                    });
+                }
                 RecordDetailListView.ItemsSource = recordDetailListViewItems;
             }
         }
@@ -61,16 +80,26 @@ namespace MahjongScoreRecord {
         private async void EditButton_Clicked(object sender, EventArgs e) {
             using (SQLiteConnection db = await DBOperations.ConnectDB()) {
                 List<Player> players = db.Table<Player>().ToList();
-                FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
-                await Navigation.PushModalAsync(new NavigationPage(new RecordUpdatePage(players, fourPlayersRecord)), true);
+                if(Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
+                    FourPlayersRecord fourPlayersRecord = db.Table<FourPlayersRecord>().First(record => record.RecordID == _RecordID);
+                    await Navigation.PushModalAsync(new NavigationPage(new RecordUpdatePage(players, fourPlayersRecord)), true);
+                }else if(Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
+                    ThreePlayersRecord threePlayersRecord = db.Table<ThreePlayersRecord>().First(record => record.RecordID == _RecordID);
+                    await Navigation.PushModalAsync(new NavigationPage(new RecordUpdatePage(players, threePlayersRecord)), true);
+                }
             }
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e) {
             if (await DisplayAlert("削除確認", $"対局名「{RecordNameLabel.Text}」\n記録日「{RecordTimeLabel.Text}」\n削除してもよろしいですか？", "Yes", "No")) {
                 using(SQLiteConnection db = await DBOperations.ConnectDB()) {
-                    db.Table<FourPlayersRecordDetail>().Delete(detail => detail.RecordID == _RecordID);
-                    db.Table<FourPlayersRecord>().Delete(record => record.RecordID == _RecordID);
+                    if(Globals.GetCurrentPlayersMode() == PlayersMode.Four) {
+                        db.Table<FourPlayersRecordDetail>().Delete(detail => detail.RecordID == _RecordID);
+                        db.Table<FourPlayersRecord>().Delete(record => record.RecordID == _RecordID);
+                    }else if(Globals.GetCurrentPlayersMode() == PlayersMode.Three) {
+                        db.Table<ThreePlayersRecordDetail>().Delete(detail => detail.RecordID == _RecordID);
+                        db.Table<ThreePlayersRecord>().Delete(record => record.RecordID == _RecordID);
+                    }
                 }
                 await DisplayAlert("削除完了", "削除が完了しました", "OK");
                 await Navigation.PopModalAsync(true);
@@ -97,6 +126,7 @@ namespace MahjongScoreRecord {
                 AdjustmentScore4 = adjustmentPoints.AdjustmentScore4;
                 MatchCount = matchCount;
                 MatchCountText = $"{matchCount}対局目";
+                PlayersMode = Globals.GetCurrentPlayersMode();
             }
             public int RecordDetailID { get; }
             public string PlayerName1 { get; }
@@ -117,6 +147,7 @@ namespace MahjongScoreRecord {
             public double AdjustmentScore4 { get; }
             public int MatchCount { get; }
             public string MatchCountText { get; }
+            public PlayersMode PlayersMode { get; }
         }
     }
 }

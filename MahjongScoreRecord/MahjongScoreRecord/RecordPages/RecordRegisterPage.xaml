@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MahjongScoreRecord"
              x:Class="MahjongScoreRecord.RecordRegisterPage"
              Title="対局登録" NavigationPage.HasNavigationBar="False" Padding="0"
              Appearing="RecordRegisterPage_Appearing">
@@ -11,7 +12,7 @@
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
                 <Label Text="対局登録" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
             </Frame>
-            <Frame HasShadow="True" BorderColor="Gray" Padding="5"
+            <Frame HasShadow="True" BorderColor="Gray" Padding="5" Margin="10"
             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
@@ -26,8 +27,20 @@
                         <Picker x:Name="PlayerPicker2" ItemDisplayBinding="{Binding PlayerName}" SelectedIndexChanged="PlayerPicker_SelectedIndexChanged"/>
                         <Label Text="プレイヤー3" FontSize="Body"/>
                         <Picker x:Name="PlayerPicker3" ItemDisplayBinding="{Binding PlayerName}" SelectedIndexChanged="PlayerPicker_SelectedIndexChanged"/>
-                        <Label Text="プレイヤー4" FontSize="Body"/>
-                        <Picker x:Name="PlayerPicker4" ItemDisplayBinding="{Binding PlayerName}" SelectedIndexChanged="PlayerPicker_SelectedIndexChanged"/>
+                        <StackLayout x:Name="PlayerStackLayout4">
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding .}" Value="{x:Static local:PlayersMode.Four}">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                    <Setter Property="IsVisible" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding .}" Value="{x:Static local:PlayersMode.Three}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                            <Label Text="プレイヤー4" FontSize="Body"/>
+                            <Picker x:Name="PlayerPicker4" ItemDisplayBinding="{Binding PlayerName}" SelectedIndexChanged="PlayerPicker_SelectedIndexChanged"/>
+                        </StackLayout>
                         <Button x:Name="RegisterButton" Text="登録" Clicked="RegisterButton_Clicked"/>
                     </StackLayout>
                 </ScrollView>

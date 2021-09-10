@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MahjongScoreRecord"
              x:Class="MahjongScoreRecord.RecordDetailListPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              NavigationPage.HasNavigationBar="False"
@@ -27,7 +28,7 @@
                     </ImageButton>
                 </RelativeLayout>
             </Frame>
-            <Frame HasShadow="True" BorderColor="Gray" Padding="5"
+            <Frame HasShadow="True" BorderColor="Gray" Padding="5" Margin="10"
                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
@@ -40,6 +41,16 @@
                                     <StackLayout>
                                         <Label Text="{Binding MatchCountText}"/>
                                         <Grid>
+                                            <Grid.Triggers>
+                                                <DataTrigger TargetType="Grid" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Four}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                    <Setter Property="IsVisible" Value="True"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Grid" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Three}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </DataTrigger>
+                                            </Grid.Triggers>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
@@ -63,6 +74,37 @@
                                             <Label Grid.Row="2" Grid.Column="1" Text="{Binding AdjustmentScore2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                             <Label Grid.Row="2" Grid.Column="2" Text="{Binding AdjustmentScore3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                             <Label Grid.Row="2" Grid.Column="3" Text="{Binding AdjustmentScore4}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Grid>
+                                        <Grid>
+                                            <Grid.Triggers>
+                                                <DataTrigger TargetType="Grid" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Four}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Grid" Binding="{Binding PlayersMode}" Value="{x:Static local:PlayersMode.Three}">
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                    <Setter Property="IsVisible" Value="True"/>
+                                                </DataTrigger>
+                                            </Grid.Triggers>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding PlayerName1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding PlayerName2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="0" Grid.Column="2" Text="{Binding PlayerName3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding PlayerPoint1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding PlayerPoint2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="1" Grid.Column="2" Text="{Binding PlayerPoint3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="0" Text="{Binding AdjustmentScore1}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding AdjustmentScore2}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                            <Label Grid.Row="2" Grid.Column="2" Text="{Binding AdjustmentScore3}" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center"/>
                                         </Grid>
                                     </StackLayout>
                                 </Frame>

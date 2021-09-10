@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MahjongScoreRecord"
              x:Class="MahjongScoreRecord.RecordDetailRegisterPage"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              Title="対局結果登録" NavigationPage.HasNavigationBar="False" Padding="0"
@@ -12,7 +13,7 @@
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.1}">
                 <Label Text="対局結果登録" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="White" FontSize="Medium"/>
             </Frame>
-            <Frame HasShadow="True" BorderColor="Gray" Padding="5"
+            <Frame HasShadow="True" BorderColor="Gray" Padding="5" Margin="10"
             RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.75}"
                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0}"
@@ -32,7 +33,7 @@
                             <Entry x:Name="PlayerPointEntry1" Grid.Row="0" Grid.Column="0"
                                    Placeholder="Point1" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
-                            <Picker x:Name="WindPicker1" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
+                            <Picker x:Name="WindPicker1" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding WindText}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
                             <Label x:Name="AdjustmentScoreLabel1" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
@@ -49,7 +50,7 @@
                             <Entry x:Name="PlayerPointEntry2" Grid.Row="0" Grid.Column="0"
                                    Placeholder="Point2" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
-                            <Picker x:Name="WindPicker2" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
+                            <Picker x:Name="WindPicker2" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding WindText}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
                             <Label x:Name="AdjustmentScoreLabel2" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
@@ -66,27 +67,39 @@
                             <Entry x:Name="PlayerPointEntry3" Grid.Row="0" Grid.Column="0"
                                    Placeholder="Point3" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
-                            <Picker x:Name="WindPicker3" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
+                            <Picker x:Name="WindPicker3" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding WindText}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
                             <Label x:Name="AdjustmentScoreLabel3" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
                         </Grid>
-                        <Label x:Name="PlayerNameLabel4" Text="{Binding .}" FontSize="Medium"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Entry x:Name="PlayerPointEntry4" Grid.Row="0" Grid.Column="0"
+                        <StackLayout x:Name="PlayerStackLayout4">
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding .}" Value="{x:Static local:PlayersMode.Four}">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                    <Setter Property="IsVisible" Value="True"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding .}" Value="{x:Static local:PlayersMode.Three}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                            <Label x:Name="PlayerNameLabel4" Text="{Binding .}" FontSize="Medium"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Entry x:Name="PlayerPointEntry4" Grid.Row="0" Grid.Column="0"
                                    Placeholder="Point4" FontSize="Body" Keyboard="Telephone" MaxLength="8"
                                    TextChanged="PlayerPointEntry_TextChanged" Unfocused="PlayerPointEntry_Unfocused"/>
-                            <Picker x:Name="WindPicker4" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding Value}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
-                            <Label x:Name="AdjustmentScoreLabel4" Grid.Row="0" Grid.Column="2" 
+                                <Picker x:Name="WindPicker4" Grid.Row="0" Grid.Column="1" FontSize="Medium" ItemDisplayBinding="{Binding WindText}" SelectedIndexChanged="WindPicker_SelectedIndexChanged"/>
+                                <Label x:Name="AdjustmentScoreLabel4" Grid.Row="0" Grid.Column="2" 
                                    Text="{Binding .}" FontSize="Medium"/>
-                        </Grid>
+                            </Grid>
+                        </StackLayout>
                         <Button x:Name="RegisterButton" Text="登録" Clicked="RegisterButton_Clicked"/>
                     </StackLayout>
                 </ScrollView>
